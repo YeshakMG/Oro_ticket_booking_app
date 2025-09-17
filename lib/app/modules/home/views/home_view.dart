@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oro_ticket_booking_app/app/widgets/app_scaffold.dart';
+import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 import '../controllers/home_controller.dart';
 import '../../book/views/book_view.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  @override
+  final HomeController controller = Get.put(HomeController());
+
+  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("OTA", style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
+    return AppScaffold(
+      title: "OTA",
+      currentBottomNavIndex: 0,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.notifications, color: Colors.white),
           onPressed: () {},
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle, size: 30),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      ],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -30,55 +29,78 @@ class HomeView extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Greeting
-              Obx(() => Text(
-                    "Good Morning,\n${controller.userName.value}",
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  )),
+              const Text("Good Morning,", style: AppTextStyles.caption2),
+              Obx(
+                () => Text(
+                  controller.userName.value.isNotEmpty
+                      ? controller.userName.value
+                      : "Olivia Rhye",
+                  style: AppTextStyles.heading3,
+                ),
+              ),
               const SizedBox(height: 16),
 
-              // Dropdown: Where From
-              Obx(() => DropdownButtonFormField<String>(
-                    value: controller.fromLocation.value,
-                    decoration: InputDecoration(
-                      labelText: "Where from",
-                      prefixIcon: const Icon(Icons.place_outlined),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+              // Dropdown: From
+              Obx(
+                () => DropdownButtonFormField<String>(
+                  initialValue: controller.fromLocation.value.isNotEmpty
+                      ? controller.fromLocation.value
+                      : null,
+                  decoration: InputDecoration(
+                    hintText: "From",
+                    hintStyle: AppTextStyles.button,
+                    prefixIcon: const Icon(Icons.place_outlined),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    items: controller.locations
-                        .map((loc) =>
-                            DropdownMenuItem(value: loc, child: Text(loc)))
-                        .toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        controller.fromLocation.value = value;
-                      }
-                    },
-                  )),
+                  ),
+                  items: controller.locations
+                      .map(
+                        (loc) => DropdownMenuItem(value: loc, child: Text(loc)),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      controller.fromLocation.value = value;
+                    }
+                  },
+                ),
+              ),
               const SizedBox(height: 12),
 
               // Dropdown: Where are you going today?
-              Obx(() => DropdownButtonFormField<String>(
-                    value: controller.toLocation.value,
-                    decoration: InputDecoration(
-                      labelText: "Where are you going today?",
-                      prefixIcon: const Icon(Icons.place),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+              Obx(
+                () => DropdownButtonFormField<String>(
+                  style: AppTextStyles.buttonMedium,
+                  initialValue: controller.toLocation.value.isNotEmpty
+                      ? controller.toLocation.value
+                      : null,
+                  decoration: InputDecoration(
+                    hintText: "Where are you going today?",
+                    hintStyle: AppTextStyles.button,
+                    prefixIcon: const Icon(Icons.place),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.swap_vert, color: Colors.green),
+                      onPressed: () {
+                        controller.toLocation();
+                      },
                     ),
-                    items: controller.locations
-                        .map((loc) =>
-                            DropdownMenuItem(value: loc, child: Text(loc)))
-                        .toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        controller.toLocation.value = value;
-                      }
-                    },
-                  )),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  items: controller.locations
+                      .map(
+                        (loc) => DropdownMenuItem(value: loc, child: Text(loc)),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      controller.toLocation.value = value;
+                    }
+                  },
+                ),
+              ),
               const SizedBox(height: 12),
 
               // Search Button
@@ -86,76 +108,135 @@ class HomeView extends GetView<HomeController> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      backgroundColor: Colors.green),
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                   onPressed: () {
-                    Get.to(() => BookView(), arguments: {
-                      "from": controller.fromLocation.value,
-                      "to": controller.toLocation.value
-                    });
+                    Get.to(
+                      () => BookView(),
+                      arguments: {
+                        "from": controller.fromLocation.value,
+                        "to": controller.toLocation.value,
+                      },
+                    );
                   },
-                  child: const Text("Search Bus",
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  child: const Text("Search Bus", style: AppTextStyles.button),
                 ),
               ),
               const SizedBox(height: 20),
 
+              // Quick Buy Tickets
+              Row(
+                children: [
+                  Expanded(child: _QuickBuyCard("Pantai Idah Kapuk")),
+                  const SizedBox(width: 12),
+                  Expanded(child: _QuickBuyCard("Central Park Mall")),
+                ],
+              ),
+              const SizedBox(height: 20),
+
               // Active Ticket Section
-              const Text("Your Active Ticket",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text(
+                "Your Active Ticket",
+                style: AppTextStyles.displayMedium,
+              ),
               const SizedBox(height: 12),
 
-              Obx(() => Column(
-                    children: controller.tickets.map((ticket) {
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(ticket["date"]!,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Chip(
-                                    label: Text(ticket["type"]!),
-                                    backgroundColor: Colors.orange.shade100,
+              Obx(
+                () => Column(
+                  children: controller.tickets.map((ticket) {
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              ticket["date"]!,
+                              style: AppTextStyles.displayMedium,
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Chip(
+                                  label: Text(ticket["type"]!),
+                                  backgroundColor: Colors.orange.shade100,
+                                ),
+                                const SizedBox(width: 8),
+                                const Chip(
+                                  label: Text("Mix"),
+                                  backgroundColor: Colors.grey,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Icon(Icons.directions_bus, size: 18),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    "${ticket["bus"]} | Arrival in ${ticket["time"]} at ${ticket["location"]}",
                                   ),
-                                  Text(ticket["bus"]!,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Text("Arrival in ${ticket["time"]} at ${ticket["location"]}"),
-                              const SizedBox(height: 8),
-                              ElevatedButton(
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
                                 onPressed: () {},
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12))),
-                                child: const Text("See Barcode",
-                                    style: TextStyle(color: Colors.white)),
-                              )
-                            ],
-                          ),
+                                  backgroundColor: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "See Barcode",
+                                  style: AppTextStyles.buttonSmall,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    }).toList(),
-                  )),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// Reusable quick-buy card
+class _QuickBuyCard extends StatelessWidget {
+  final String title;
+  const _QuickBuyCard(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Center(
+        child: Text(
+          "Buy ticket to\n$title",
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 14),
         ),
       ),
     );

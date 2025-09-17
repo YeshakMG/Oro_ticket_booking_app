@@ -33,7 +33,7 @@ class AppPages {
         binding: AuthBinding()),
     GetPage(
         name: _Paths.HOME,
-        page: () => const HomeView(),
+        page: () =>  HomeView(),
         binding: HomeBinding()),
     GetPage(
         name: _Paths.LOGIN, page: () => LoginView(), binding: LoginBinding()),
