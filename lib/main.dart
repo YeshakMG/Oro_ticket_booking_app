@@ -16,13 +16,16 @@ Future<void> main() async {
   }
 
   await Hive.initFlutter();
-  await Hive.openBox('appBox');
+  final box = await Hive.openBox('appBox');
 
-  runApp(const MyApp());
+  String? token = box.get("token");
+
+  runApp(MyApp(initialRoute: token != null ? Routes.HOME : Routes.LOGIN));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+  const MyApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      initialRoute: Routes.HOME,
+      initialRoute: initialRoute,
       getPages: AppPages.routes,
     );
   }

@@ -3,14 +3,21 @@ import 'package:get/get.dart';
 import 'package:oro_ticket_booking_app/app/modules/auth/controllers/auth_controller.dart';
 
 class AuthView extends GetView<AuthController> {
+
+
   const AuthView({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body: SafeArea(
+
         child: Center(
+
           child: SingleChildScrollView(
+            
             padding: const EdgeInsets.all(24.0),
             child: Obx(() {
               return Column(

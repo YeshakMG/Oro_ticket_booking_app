@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oro_ticket_booking_app/app/modules/login/controllers/login_controller.dart';
+import '../../login/controllers/login_controller.dart';
+import '../../signup/controllers/signup_controller.dart';
+import '../../auth/authtabs/authtabs_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Access other controllers via Get.find()
+    final signUpController = Get.find<SignUpController>();
+    final tabController = Get.find<AuthtabsController>();
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Background image with logo
+            // Background with logo
             Stack(
               children: [
                 Container(
                   height: 250,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("assets/images/bus_bg.jpg"),
                       fit: BoxFit.cover,
@@ -29,7 +35,7 @@ class LoginView extends GetView<LoginController> {
                   left: 0,
                   right: 0,
                   child: Column(
-                    children: [
+                    children: const [
                       CircleAvatar(
                         radius: 40,
                         backgroundColor: Colors.white,
@@ -37,12 +43,14 @@ class LoginView extends GetView<LoginController> {
                             size: 40, color: Colors.green),
                       ),
                       SizedBox(height: 10),
-                      Text("Get Started now",
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold)),
                       Text(
-                        "Create an account or log in to explore about our app",
-                        style: TextStyle(color: Colors.grey[200], fontSize: 14),
+                        "Oro Ticket Booking",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Create an account or log in to explore our app",
+                        style: TextStyle(color: Colors.white70, fontSize: 14),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -51,115 +59,53 @@ class LoginView extends GetView<LoginController> {
               ],
             ),
 
-            // Login form
+            // Form container
             Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
               ),
               child: Column(
                 children: [
-                  // Tabs (Login / Sign Up)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () {},
-                          child: Text("Log In",
+                  // Tabs
+                  Obx(() => Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () => tabController.changeTab(0),
+                            child: Text(
+                              "Log In",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green))),
-                      SizedBox(width: 20),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text("Sign Up",
-                              style: TextStyle(color: Colors.grey))),
-                    ],
-                  ),
-
-                  SizedBox(height: 20),
-
-                  // Email / phone field
-                  TextField(
-                    controller: controller.phoneController,
-                    decoration: InputDecoration(
-                      labelText: "Phone Number",
-                      hintText: "example@email.com",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-
-                  // Password field
-                  Obx(() => TextField(
-                        controller: controller.passwordController,
-                        obscureText: controller.isPasswordHidden.value,
-                        decoration: InputDecoration(
-                          labelText: "Password",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(controller.isPasswordHidden.value
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                            onPressed: () {
-                              controller.isPasswordHidden.value =
-                                  !controller.isPasswordHidden.value;
-                            },
-                          ),
-                        ),
-                      )),
-                  SizedBox(height: 10),
-
-                  // Remember me + Forgot Password
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Obx(() => Row(
-                            children: [
-                              Checkbox(
-                                value: controller.rememberMe.value,
-                                onChanged: (value) =>
-                                    controller.rememberMe.value = value ?? false,
+                                fontWeight: FontWeight.bold,
+                                color: tabController.selectedTab.value == 0
+                                    ? Colors.green
+                                    : Colors.grey,
                               ),
-                              Text("Remember me"),
-                            ],
-                          )),
-                      TextButton(
-                        onPressed: () {
-                          // TODO: Forgot password navigation
-                        },
-                        child: Text("Forgot Password ?",
-                            style: TextStyle(color: Colors.green)),
-                      )
-                    ],
-                  ),
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          TextButton(
+                            onPressed: () => tabController.changeTab(1),
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: tabController.selectedTab.value == 1
+                                    ? Colors.green
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
 
-                  SizedBox(height: 15),
+                  const SizedBox(height: 20),
 
-                  // Login button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: controller.login,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                      ),
-                      child: Text("Login",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-
-                  
+                  // Switch forms
+                  Obx(() => tabController.selectedTab.value == 0
+                      ? _buildLoginForm(controller)
+                      : _buildSignUpForm(signUpController)),
                 ],
               ),
             )
@@ -169,4 +115,128 @@ class LoginView extends GetView<LoginController> {
     );
   }
 
+  /// ------------------ LOGIN FORM ------------------
+  Widget _buildLoginForm(LoginController loginController) {
+    return Column(
+      children: [
+        TextField(
+          controller: loginController.phoneController,
+          decoration: InputDecoration(
+            labelText: "Phone Number",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+        Obx(() => TextField(
+              controller: loginController.passwordController,
+              obscureText: loginController.isPasswordHidden.value,
+              decoration: InputDecoration(
+                labelText: "Password",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(loginController.isPasswordHidden.value
+                      ? Icons.visibility_off
+                      : Icons.visibility),
+                  onPressed: () => loginController.isPasswordHidden.value =
+                      !loginController.isPasswordHidden.value,
+                ),
+              ),
+            )),
+        const SizedBox(height: 15),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: loginController.login,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            child: const Text(
+              "Login",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// ------------------ SIGN UP FORM ------------------
+  Widget _buildSignUpForm(SignUpController signUpController) {
+    return Column(
+      children: [
+        TextField(
+          controller: signUpController.fullNameController,
+          decoration: InputDecoration(
+            labelText: "Full Name",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+        TextField(
+          controller: signUpController.phoneController,
+          decoration: InputDecoration(
+            labelText: "Phone Number",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+        TextField(
+          controller: signUpController.emailController,
+          decoration: InputDecoration(
+            labelText: "Email",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+        Obx(() => TextField(
+              controller: signUpController.passwordController,
+              obscureText: signUpController.isPasswordHidden.value,
+              decoration: InputDecoration(
+                labelText: "Password",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(signUpController.isPasswordHidden.value
+                      ? Icons.visibility_off
+                      : Icons.visibility),
+                  onPressed: () =>
+                      signUpController.isPasswordHidden.value =
+                          !signUpController.isPasswordHidden.value,
+                ),
+              ),
+            )),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: signUpController.register,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            child: const Text(
+              "Sign Up",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

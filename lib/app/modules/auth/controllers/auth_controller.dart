@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../auth_service.dart';
 
 class AuthController extends GetxController {
   final AuthService _authService = AuthService();
+  final storage = const FlutterSecureStorage();
 
   // Observables
   var isLogin = true.obs;
@@ -12,7 +14,7 @@ class AuthController extends GetxController {
   var phone = ''.obs;
   var email = ''.obs;
   var password = ''.obs;
-  var role_id = 2.obs; // default role_id for customers
+  var roleId = 2.obs; // default role_id for customers
 
   /// Toggle between login/signup
   void toggleAuthMode() {
@@ -21,7 +23,10 @@ class AuthController extends GetxController {
 
   /// Sign Up API call
   Future<void> signup() async {
-    if (fullName.isEmpty || phone.isEmpty || email.isEmpty || password.isEmpty) {
+    if (fullName.value.isEmpty ||
+        phone.value.isEmpty ||
+        email.value.isEmpty ||
+        password.value.isEmpty) {
       Get.snackbar("Error", "All fields are required");
       return;
     }
@@ -34,6 +39,7 @@ class AuthController extends GetxController {
         phone: phone.value,
         email: email.value,
         password: password.value,
+        roleId: roleId.value,
       );
 
       Get.snackbar("Success", "Account created successfully");
@@ -47,7 +53,7 @@ class AuthController extends GetxController {
 
   /// Login API call
   Future<void> login() async {
-    if (phone.isEmpty || password.isEmpty) {
+    if (phone.value.isEmpty || password.value.isEmpty) {
       Get.snackbar("Error", "Phone and password are required");
       return;
     }
@@ -60,13 +66,27 @@ class AuthController extends GetxController {
         password: password.value,
       );
 
+      // Save token
+      await storage.write(key: "token", value: response["token"]);
+
       Get.snackbar("Success", "Login successful!");
-      // TODO: Save token and navigate to home/tickets screen
-      // Example: Get.offAllNamed("/tickets");
+      Get.offAllNamed("/home"); // navigate to home screen
     } catch (e) {
       Get.snackbar("Error", e.toString());
     } finally {
       isLoading.value = false;
     }
+  }
+
+  /// Logout
+  Future<void> logout() async {
+    await storage.delete(key: "token");
+    Get.offAllNamed("/login");
+  }
+
+  /// Check if token exists
+  Future<bool> isLoggedIn() async {
+    String? token = await storage.read(key: "token");
+    return token != null;
   }
 }

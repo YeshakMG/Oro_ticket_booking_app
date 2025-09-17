@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class SignUpController extends GetxController {
   final fullNameController = TextEditingController();
@@ -21,14 +22,14 @@ class SignUpController extends GetxController {
       return;
     }
 
-    isLoading.value = true;
-
     try {
-      // TODO: Replace with API call
+      isLoading.value = true;
+
+      // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
 
       Get.snackbar("Success", "Account created successfully");
-      Get.offAllNamed("/login"); // 👈 redirect to login
+      Get.offAllNamed("/login"); // Navigate to login page after signup
     } catch (e) {
       Get.snackbar("Error", "Registration failed: $e");
     } finally {
