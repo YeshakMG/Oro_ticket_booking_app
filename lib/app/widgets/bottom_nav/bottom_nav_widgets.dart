@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:oro_ticket_booking_app/app/widgets/bottom_nav/bottom_nav_controller.dart';
 
 class BottomNavWidget extends StatelessWidget {
-  BottomNavWidget({super.key});
-
-  final BottomNavController controller = Get.put(BottomNavController());
+  const BottomNavWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final BottomNavController controller = Get.put(BottomNavController());
+
     return Obx(
       () => BottomNavigationBar(
         currentIndex: controller.selectedIndex.value,
@@ -24,6 +24,11 @@ class BottomNavWidget extends StatelessWidget {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.confirmation_number_outlined),
+            activeIcon: Icon(Icons.confirmation_number),
+            label: 'My Ticket',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
             activeIcon: Icon(Icons.settings),
             label: 'Settings',
@@ -33,3 +38,4 @@ class BottomNavWidget extends StatelessWidget {
     );
   }
 }
+
