@@ -19,6 +19,8 @@ import '../modules/settings/views/settings_view.dart';
 import '../modules/signup/bindings/signup_binding.dart';
 import '../modules/signup/views/signup_view.dart';
 import '../modules/splash/splash_view.dart';
+import '../modules/trip_selection/bindings/trip_selection_binding.dart';
+import '../modules/trip_selection/views/trip_selection_view.dart';
 
 part 'app_routes.dart';
 
@@ -47,6 +49,11 @@ class AppPages {
         page: () => const ProfileView(),
         binding: ProfileBinding()),
     GetPage(
+      name: _Paths.TRIP_SELECTION,
+      page: () => const TripSelectionView(),
+      binding: TripSelectionBinding(),
+    ),
+    GetPage(
       name: _Paths.BOOK,
       page: () => BookView(),
       binding: BookBinding(),
@@ -58,7 +65,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SETTINGS,
-      page: () => const SettingsView(),
+      page: () =>  SettingsView(),
       binding: SettingsBinding(),
     ),
     GetPage(

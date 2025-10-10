@@ -1,114 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../login/controllers/login_controller.dart';
-import '../../signup/controllers/signup_controller.dart';
-import '../../auth/authtabs/authtabs_controller.dart';
+import '../../settings/controllers/settings_controller.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Access other controllers via Get.find()
-    final signUpController = Get.find<SignUpController>();
-    final tabController = Get.find<AuthtabsController>();
-
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login'),
+        backgroundColor: Colors.green,
+        actions: [
+          Get.isRegistered<SettingsController>()
+              ? Obx(() {
+                  final settings = Get.find<SettingsController>();
+                  final items = settings.languages;
+                  final selected = settings.selectedLanguageCode.value;
+                  return PopupMenuButton<String>(
+                    tooltip: 'Language',
+                    icon: const Icon(Icons.language),
+                    onSelected: (code) => settings.changeLanguage(code),
+                    itemBuilder: (context) => items
+                        .map((lang) => PopupMenuItem<String>(
+                              value: lang['code']!,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('${lang['code']} - ${lang['nativeName']}'),
+                                  if (lang['code'] == selected)
+                                    const Icon(Icons.check, size: 16),
+                                ],
+                              ),
+                            ))
+                        .toList(),
+                  );
+                })
+              : const SizedBox.shrink(),
+        ],
+      ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Background with logo
-            Stack(
+            // Logo and title
+            Column(
               children: [
-                Container(
-                  height: 250,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/bus_bg.jpg"),
-                      fit: BoxFit.cover,
-                    ),
+                Image.asset(
+                  "assets/logo/OTA_logo.png",
+                  height: 80,
+                  width: 80,
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Oromia Transport Agency",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
                   ),
                 ),
-                Positioned(
-                  top: 60,
-                  left: 0,
-                  right: 0,
-                  child: Column(
-                    children: const [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.directions_bus,
-                            size: 40, color: Colors.green),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "Oro Ticket Booking",
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Create an account or log in to explore our app",
-                        style: TextStyle(color: Colors.white70, fontSize: 14),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                )
+                const SizedBox(height: 20),
               ],
             ),
-
-            // Form container
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-              ),
-              child: Column(
-                children: [
-                  // Tabs
-                  Obx(() => Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                            onPressed: () => tabController.changeTab(0),
-                            child: Text(
-                              "Log In",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: tabController.selectedTab.value == 0
-                                    ? Colors.green
-                                    : Colors.grey,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          TextButton(
-                            onPressed: () => tabController.changeTab(1),
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: tabController.selectedTab.value == 1
-                                    ? Colors.green
-                                    : Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-
-                  const SizedBox(height: 20),
-
-                  // Switch forms
-                  Obx(() => tabController.selectedTab.value == 0
-                      ? _buildLoginForm(controller)
-                      : _buildSignUpForm(signUpController)),
-                ],
-              ),
-            )
+            _buildLoginForm(controller),
           ],
         ),
       ),
@@ -117,126 +73,117 @@ class LoginView extends GetView<LoginController> {
 
   /// ------------------ LOGIN FORM ------------------
   Widget _buildLoginForm(LoginController loginController) {
-    return Column(
-      children: [
-        TextField(
-          controller: loginController.phoneController,
-          decoration: InputDecoration(
-            labelText: "Phone Number",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        Obx(() => TextField(
-              controller: loginController.passwordController,
-              obscureText: loginController.isPasswordHidden.value,
-              decoration: InputDecoration(
-                labelText: "Password",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(loginController.isPasswordHidden.value
-                      ? Icons.visibility_off
-                      : Icons.visibility),
-                  onPressed: () => loginController.isPasswordHidden.value =
-                      !loginController.isPasswordHidden.value,
-                ),
+    return Form(
+      key: loginController.formKey,
+      child: Column(
+        children: [
+          // Phone number input
+          TextFormField(
+            controller: loginController.phoneController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Phone number is required';
+              }
+              if (value.length < 10) {
+                return 'Phone number must be at least 10 digits';
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              labelText: "Phone Number",
+              prefixIcon: const Icon(Icons.phone, color: Colors.green),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-            )),
-        const SizedBox(height: 15),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: loginController.login,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-            ),
-            child: const Text(
-              "Login",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             ),
           ),
-        ),
-      ],
-    );
-  }
+          const SizedBox(height: 15),
 
-  /// ------------------ SIGN UP FORM ------------------
-  Widget _buildSignUpForm(SignUpController signUpController) {
-    return Column(
-      children: [
-        TextField(
-          controller: signUpController.fullNameController,
-          decoration: InputDecoration(
-            labelText: "Full Name",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        TextField(
-          controller: signUpController.phoneController,
-          decoration: InputDecoration(
-            labelText: "Phone Number",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        TextField(
-          controller: signUpController.emailController,
-          decoration: InputDecoration(
-            labelText: "Email",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        Obx(() => TextField(
-              controller: signUpController.passwordController,
-              obscureText: signUpController.isPasswordHidden.value,
-              decoration: InputDecoration(
-                labelText: "Password",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+          // Password input wrapped with Obx
+          Obx(() => TextFormField(
+                controller: loginController.passwordController,
+                obscureText: loginController.isPasswordHidden.value,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Password is required';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: "Password",
+                  prefixIcon: const Icon(Icons.lock, color: Colors.green),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  suffixIcon: IconButton(
+                    icon: Icon(loginController.isPasswordHidden.value
+                        ? Icons.visibility_off
+                        : Icons.visibility),
+                    onPressed: loginController.togglePasswordVisibility,
+                  ),
                 ),
-                suffixIcon: IconButton(
-                  icon: Icon(signUpController.isPasswordHidden.value
-                      ? Icons.visibility_off
-                      : Icons.visibility),
-                  onPressed: () =>
-                      signUpController.isPasswordHidden.value =
-                          !signUpController.isPasswordHidden.value,
+              )),
+          const SizedBox(height: 15),
+
+          // Login button wrapped with Obx
+          Obx(() => SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: loginController.isLoading.value
+                      ? null
+                      : () {
+                          if (loginController.formKey.currentState
+                                  ?.validate() ??
+                              false) {
+                            debugPrint("Login button clicked");
+                            loginController.login();
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: loginController.isLoading.value
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          "Login",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                ),
+              )),
+
+          const SizedBox(height: 20),
+
+          // Redirect to SignUp
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Don’t have an account? "),
+              TextButton(
+                onPressed: () {
+                  Get.toNamed('/signup');
+                },
+                child: const Text(
+                  "Sign Up",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
                 ),
               ),
-            )),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: signUpController.register,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-            ),
-            child: const Text(
-              "Sign Up",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

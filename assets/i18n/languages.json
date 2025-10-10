@@ -1,0 +1,22 @@
+{
+  "default": "en",
+  "languages": [
+    {
+      "code": "en",
+      "name": "English",
+      "nativeName": "English"
+    },
+    {
+      "code": "am",
+      "name": "Amharic",
+      "nativeName": "አማርኛ"
+    },
+    {
+      "code": "om",
+      "name": "Afaan Oromo",
+      "nativeName": "Afaan Oromo"
+    }
+  ]
+}
+
+

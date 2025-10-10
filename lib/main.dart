@@ -2,21 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:oro_ticket_booking_app/app/data/models/user_model.dart';
+import 'package:oro_ticket_booking_app/app/data/models/trip_model.dart';
+import 'package:oro_ticket_booking_app/app/modules/auth/authtabs/authtabs_controller.dart';
+import 'package:oro_ticket_booking_app/app/modules/signup/controllers/signup_controller.dart';
 
 import 'app/routes/app_pages.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
+  
     await dotenv.load(fileName: ".env");
     print("Loaded .env successfully");
-  } catch (e) {
-    print("No .env file found, skipping dotenv load");
-  }
-
-  await Hive.initFlutter();
-  final box = await Hive.openBox('appBox');
+  
+    await GetStorage.init();
+    await Hive.initFlutter();
+    Hive.registerAdapter(UserModelAdapter());
+    Hive.registerAdapter(TripModelAdapter());
+    final box = await Hive.openBox('appBox');
+   Get.lazyPut(() => SignUpController()); // ✅ Add this
+   Get.lazyPut(() => AuthtabsController()); // ✅ Add this
 
   String? token = box.get("token");
 

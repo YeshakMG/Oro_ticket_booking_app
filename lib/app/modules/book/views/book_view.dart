@@ -21,7 +21,7 @@ class BookView extends GetView<BookController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Ticket Info Card
-              Card(
+              Obx(() => Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -30,37 +30,37 @@ class BookView extends GetView<BookController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Mon, 19 February 2025",
+                      Text(
+                        "Trip Details",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
                           Chip(
-                            label: const Text("Fastest"),
+                            label: Text(controller.selectedTrip.value?['level'] ?? 'Standard'),
                             backgroundColor: Colors.orange.shade300,
                             labelStyle: const TextStyle(color: Colors.white),
                           ),
                           const SizedBox(width: 8),
-                          const Chip(label: Text("Mix")),
+                          Chip(label: Text("Price: ${controller.selectedTrip.value?['price'] ?? 'N/A'} ETB")),
                         ],
                       ),
                       const SizedBox(height: 12),
                       Row(
-                        children: const [
+                        children: [
                           Icon(Icons.location_on, color: Colors.green),
                           SizedBox(width: 6),
-                          Text("Halte K. Bali"),
+                          Text(controller.selectedTrip.value?['departure'] ?? 'N/A'),
                           Spacer(),
                           Icon(Icons.location_on, color: Colors.red),
                           SizedBox(width: 6),
-                          Text("Halte Senen"),
+                          Text(controller.selectedTrip.value?['destination'] ?? 'N/A'),
                         ],
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        "Bus 01  •  Arrival in 15:30 at Halte Kampung Bali",
+                      Text(
+                        "Bus ${controller.selectedTrip.value?['plateNumber'] ?? 'N/A'} • Seats Available: ${controller.selectedTrip.value?['seatsAvailable'] ?? 'N/A'}",
                       ),
                       const SizedBox(height: 12),
 
@@ -77,7 +77,7 @@ class BookView extends GetView<BookController> {
                     ],
                   ),
                 ),
-              ),
+              )),
               const SizedBox(height: 20),
 
               // Seat Layout
@@ -105,7 +105,7 @@ class BookView extends GetView<BookController> {
                           const SizedBox(height: 12),
 
                           // rows
-                          for (var row in ["A", "B", "C", "D", "E", "F", "G"])
+                          for (var row in ctrl.seats.keys.map((seat) => seat[0]).toSet().toList()..sort())
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: Row(
@@ -172,7 +172,10 @@ class BookView extends GetView<BookController> {
                           colorText: Colors.white,
                         );
                       } else {
-                        Get.toNamed('/confirm', arguments: selected);
+                        Get.toNamed('/payment', arguments: {
+                          'selectedSeats': selected,
+                          'trip': controller.selectedTrip.value,
+                        });
                       }
                     },
                     child: const Text(

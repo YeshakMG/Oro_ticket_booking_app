@@ -1,10 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:get_storage/get_storage.dart';
+import '../../home/controllers/home_controller.dart';
+import '../../settings/controllers/settings_controller.dart';
 import '../auth_service.dart';
+import '../../../data/models/user_model.dart';
 
 class AuthController extends GetxController {
-  final AuthService _authService = AuthService();
-  final storage = const FlutterSecureStorage();
+  final formKey = GlobalKey<FormState>();
+  final AuthService _authService = Get.find<AuthService>();
+  final box = GetStorage();
 
   // Observables
   var isLogin = true.obs;
@@ -23,18 +29,10 @@ class AuthController extends GetxController {
 
   /// Sign Up API call
   Future<void> signup() async {
-    if (fullName.value.isEmpty ||
-        phone.value.isEmpty ||
-        email.value.isEmpty ||
-        password.value.isEmpty) {
-      Get.snackbar("Error", "All fields are required");
-      return;
-    }
-
     try {
       isLoading.value = true;
 
-      final response = await _authService.signup(
+      await _authService.signup(
         fullName: fullName.value,
         phone: phone.value,
         email: email.value,
@@ -53,11 +51,6 @@ class AuthController extends GetxController {
 
   /// Login API call
   Future<void> login() async {
-    if (phone.value.isEmpty || password.value.isEmpty) {
-      Get.snackbar("Error", "Phone and password are required");
-      return;
-    }
-
     try {
       isLoading.value = true;
 
@@ -66,8 +59,13 @@ class AuthController extends GetxController {
         password: password.value,
       );
 
-      // Save token
-      await storage.write(key: "token", value: response["token"]);
+      // Save token and user data
+      final userData = response["customer"];
+      box.write("token", response["token"]);
+      box.write("fullName", userData["full_name"]);
+      box.write("phone", userData["phone"]);
+      box.write("email", userData["email"]);
+      box.write("roleId", userData["role_id"]);
 
       Get.snackbar("Success", "Login successful!");
       Get.offAllNamed("/home"); // navigate to home screen
@@ -80,13 +78,17 @@ class AuthController extends GetxController {
 
   /// Logout
   Future<void> logout() async {
-    await storage.delete(key: "token");
+    box.remove("token");
+    box.remove("fullName");
+    box.remove("phone");
+    box.remove("email");
+    box.remove("roleId");
     Get.offAllNamed("/login");
   }
 
   /// Check if token exists
   Future<bool> isLoggedIn() async {
-    String? token = await storage.read(key: "token");
+    String? token = box.read("token");
     return token != null;
   }
 }

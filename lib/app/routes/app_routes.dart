@@ -13,6 +13,7 @@ abstract class Routes {
   static const PAYMENT = _Paths.PAYMENT;
   static const SETTINGS = _Paths.SETTINGS;
   static const MYTICKET = _Paths.MYTICKET;
+  static const TRIP_SELECTION = _Paths.TRIP_SELECTION;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const PAYMENT = '/payment';
   static const SETTINGS = '/settings';
   static const MYTICKET = '/myticket';
+  static const TRIP_SELECTION = '/trip-selection';
 }

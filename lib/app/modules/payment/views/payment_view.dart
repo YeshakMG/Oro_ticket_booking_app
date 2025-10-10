@@ -17,6 +17,28 @@ class PaymentView extends GetView<PaymentController> {
         child: Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Trip Info
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${controller.selectedTrip.value?['departure'] ?? 'N/A'} → ${controller.selectedTrip.value?['destination'] ?? 'N/A'}",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    Text("Bus: ${controller.selectedTrip.value?['plateNumber'] ?? 'N/A'}"),
+                    Text("Price per seat: ${controller.selectedTrip.value?['price'] ?? 'N/A'} ETB"),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             const Text("Selected Seats:",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
@@ -31,6 +53,11 @@ class PaymentView extends GetView<PaymentController> {
                       ))
                   .toList(),
             ),
+            const SizedBox(height: 16),
+            Text(
+              "Total Amount: ${(controller.selectedSeats.length * (controller.selectedTrip.value?['price'] ?? 0)).toStringAsFixed(2)} ETB",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             const Spacer(),
             SizedBox(
               width: double.infinity,
@@ -40,15 +67,10 @@ class PaymentView extends GetView<PaymentController> {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
-                onPressed: () {
-                  Get.snackbar("Booking Confirmed",
-                      "Your seats have been successfully booked!",
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.green,
-                      colorText: Colors.white);
-                },
-                child: const Text("Confirm & Pay",
+                onPressed: () => controller.processPayment(),
+                child: const Text("Pay Now",
                     style: TextStyle(color: Colors.white, fontSize: 16)),
+                    
               ),
             )
           ],

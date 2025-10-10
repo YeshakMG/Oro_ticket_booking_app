@@ -3,31 +3,43 @@ import 'package:get/get.dart';
 class BookController extends GetxController {
   // Observable seat map
   var seats = <String, String>{}.obs;
+  var selectedTrip = Rxn<Map<String, dynamic>>();
 
   @override
   void onInit() {
     super.onInit();
-    _generateSeats();
+    if (Get.arguments != null) {
+      selectedTrip.value = Get.arguments is Map
+          ? Map<String, dynamic>.from(Get.arguments)
+          : <String, dynamic>{};
+      _generateSeats();
+    }
   }
 
-  /// Generate seats A–G and 1–4, all initially "available"
+  /// Generate seats dynamically based on trip's seatsAvailable
   void _generateSeats() {
-    const rows = ["A", "B", "C", "D", "E", "F", "G"];
-    const cols = [1, 2, 3, 4];
+    if (selectedTrip.value == null) return;
 
-    for (var row in rows) {
-      for (var col in cols) {
-        seats["$row$col"] = "available";
+    int totalSeats = selectedTrip.value!['seatsAvailable'] ?? 28;
+    seats.clear();
+
+    // Assume 4 seats per row, calculate rows needed
+    int seatsPerRow = 4;
+    int rowsNeeded = (totalSeats / seatsPerRow).ceil();
+    List<String> rowLabels = List.generate(rowsNeeded, (index) => String.fromCharCode(65 + index)); // A, B, C, ...
+
+    for (var row in rowLabels) {
+      for (int col = 1; col <= seatsPerRow; col++) {
+        String seatId = "$row$col";
+        seats[seatId] = "available";
       }
     }
 
-    // Example: pre-booked or pre-selected seats
-    seats["C2"] = "selected";
-    seats["D4"] = "booked";
-    seats["E1"] = "selected";
-    seats["E2"] = "selected";
-    seats["E4"] = "booked";
-    seats["G4"] = "booked";
+    // Example: pre-booked seats (in real app, this would come from API)
+    if (seats.containsKey("C2")) seats["C2"] = "booked";
+    if (seats.containsKey("D4")) seats["D4"] = "booked";
+    if (seats.containsKey("E4")) seats["E4"] = "booked";
+    if (seats.containsKey("G4")) seats["G4"] = "booked";
   }
 
   /// Toggle seat selection

@@ -23,6 +23,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   dropdown_search: ^6.0.2
   dio: ^5.9.0
+  qr_flutter: ^4.1.0
   
 
 dev_dependencies:
@@ -45,6 +46,7 @@ flutter:
       - assets/images/
       - assets/logo/
       - assets/fonts/
+      - assets/i18n/
       - .env
   fonts:
     - family: Poppins

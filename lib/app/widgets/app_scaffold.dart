@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:oro_ticket_booking_app/app/modules/home/views/home_view.dart';
 import 'package:oro_ticket_booking_app/app/modules/myticket/views/myticket_view.dart';
-import 'package:oro_ticket_booking_app/app/modules/settings/views/settings_view.dart';
+import 'package:oro_ticket_booking_app/app/routes/app_pages.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 
 class AppScaffold extends StatefulWidget {
@@ -51,13 +51,13 @@ class _AppScaffoldState extends State<AppScaffold> {
                   (index) {
                     switch (index) {
                       case 0:
-                        Get.offAll(() => HomeView());
+                        Get.offAllNamed(Routes.HOME);
                         break;
                       case 1:
-                        Get.offAll(() => MyticketView());
+                        Get.offAllNamed(Routes.MYTICKET);
                         break;
                       case 2:
-                        Get.offAll(() => SettingsView());
+                        Get.offAllNamed(Routes.SETTINGS);
                         break;
                     }
                   },

@@ -2,54 +2,117 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oro_ticket_booking_app/app/widgets/app_scaffold.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
-import '../controllers/home_controller.dart';
+import 'package:oro_ticket_booking_app/core/utils/ethiopian_date_converter.dart';
 import '../../book/views/book_view.dart';
+import '../controllers/home_controller.dart';
 
-class HomeView extends GetView<HomeController> {
-  @override
-  final HomeController controller = Get.put(HomeController());
 
+class HomeView extends StatefulWidget {
   HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  late HomeController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.find<HomeController>();
+    controller.reloadUser();
+  }
+
+  void _showEthiopianDatePicker(BuildContext context) {
+    EthiopianDate currentEthiopian = controller.selectedDate.value != null
+        ? EthiopianDateConverter.toEthiopian(controller.selectedDate.value!)
+        : EthiopianDateConverter.now();
+
+    int selectedYear = currentEthiopian.year;
+    int selectedMonth = currentEthiopian.month;
+    int selectedDay = currentEthiopian.day;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Select Ethiopian Date"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Year
+              DropdownButtonFormField<int>(
+                value: selectedYear,
+                decoration: const InputDecoration(labelText: "Year"),
+                items: List.generate(5, (index) => currentEthiopian.year - 2 + index)
+                    .map((year) => DropdownMenuItem(value: year, child: Text(year.toString())))
+                    .toList(),
+                onChanged: (value) => selectedYear = value!,
+              ),
+              // Month
+              DropdownButtonFormField<int>(
+                value: selectedMonth,
+                decoration: const InputDecoration(labelText: "Month"),
+                items: List.generate(13, (index) => index + 1)
+                    .map((month) => DropdownMenuItem(value: month, child: Text(EthiopianDate(year: selectedYear, month: month, day: 1).monthName)))
+                    .toList(),
+                onChanged: (value) => selectedMonth = value!,
+              ),
+              // Day
+              DropdownButtonFormField<int>(
+                value: selectedDay,
+                decoration: const InputDecoration(labelText: "Day"),
+                items: List.generate(selectedMonth == 13 ? 6 : 30, (index) => index + 1)
+                    .map((day) => DropdownMenuItem(value: day, child: Text(day.toString())))
+                    .toList(),
+                onChanged: (value) => selectedDay = value!,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                EthiopianDate selectedEthiopian = EthiopianDate(year: selectedYear, month: selectedMonth, day: selectedDay);
+                controller.selectedDate.value = EthiopianDateConverter.toGregorian(selectedEthiopian);
+                Navigator.of(context).pop();
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: "OTA",
+      title: "Oromia Transport Agency",
       currentBottomNavIndex: 0,
       actions: [
         IconButton(
-          icon: const Icon(Icons.notifications, color: Colors.white),
+          icon: const Icon(Icons.notifications, color: Colors.white), 
           onPressed: () {},
         ),
       ],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Obx(() {
-          if (homeController.terminals.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Greeting
+            const Text("Hello,", style: AppTextStyles.caption2),
+            Obx(() => Text(controller.userName.value, style: AppTextStyles.heading3)),
+            const SizedBox(height: 16),
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Greeting
-              const Text("Good Morning,", style: AppTextStyles.caption2),
-              Obx(
-                () => Text(
-                  controller.userName.value.isNotEmpty
-                      ? controller.userName.value
-                      : "Olivia Rhye",
-                  style: AppTextStyles.heading3,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Dropdown: From
-              Obx(
-                () => DropdownButtonFormField<String>(
-                  initialValue: controller.fromLocation.value.isNotEmpty
-                      ? controller.fromLocation.value
-                      : null,
+            // Dropdown: From
+            Obx(() => DropdownButtonFormField<Map<String, dynamic>>(
+                  value: controller.fromLocation.value,
                   decoration: InputDecoration(
                     hintText: "From",
                     hintStyle: AppTextStyles.button,
@@ -58,172 +121,102 @@ class HomeView extends GetView<HomeController> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  items: controller.locations
-                      .map(
-                        (loc) => DropdownMenuItem(value: loc, child: Text(loc)),
-                      )
+                  items: controller.terminals
+                      .map((terminal) => DropdownMenuItem<Map<String, dynamic>>(
+                            value: terminal,
+                            child: Text(terminal['name']),
+                          ))
                       .toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      controller.fromLocation.value = value;
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(height: 12),
+                  onChanged: (value) => controller.changeFromLocation(value!),
+                )),
+            const SizedBox(height: 12),
 
-              // Dropdown: Where are you going today?
-              Obx(
-                () => DropdownButtonFormField<String>(
-                  style: AppTextStyles.buttonMedium,
-                  initialValue: controller.toLocation.value.isNotEmpty
-                      ? controller.toLocation.value
-                      : null,
+            // Dropdown: To
+            Obx(() => DropdownButtonFormField<Map<String, dynamic>>(
+                  value: controller.toLocation.value,
                   decoration: InputDecoration(
                     hintText: "Where are you going today?",
                     hintStyle: AppTextStyles.button,
                     prefixIcon: const Icon(Icons.place),
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.swap_vert, color: Colors.green),
-                      onPressed: () {
-                        controller.toLocation();
-                      },
+                      onPressed: controller.swapLocations,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  items: controller.locations
-                      .map(
-                        (loc) => DropdownMenuItem(value: loc, child: Text(loc)),
-                      )
+                  items: controller.terminals
+                      .map((terminal) => DropdownMenuItem<Map<String, dynamic>>(
+                            value: terminal,
+                            child: Text(terminal['name']),
+                          ))
                       .toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      controller.toLocation.value = value;
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(height: 12),
+                  onChanged: (value) => controller.changeToLocation(value!),
+                )),
+            const SizedBox(height: 12),
 
-              // Search Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
+            // Date Picker
+            Obx(() => TextFormField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    hintText: "Select Date",
+                    hintStyle: AppTextStyles.button,
+                    prefixIcon: const Icon(Icons.calendar_today),
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: () {
-                    Get.to(
-                      () => BookView(),
-                      arguments: {
-                        "from": controller.fromLocation.value,
-                        "to": controller.toLocation.value,
-                      },
-                    );
-                  },
-                  child: const Text("Search Bus", style: AppTextStyles.button),
+                  controller: TextEditingController(
+                    text: controller.selectedDate.value != null
+                        ? EthiopianDateConverter.format(EthiopianDateConverter.toEthiopian(controller.selectedDate.value!))
+                        : "",
+                  ),
+                  onTap: () => _showEthiopianDatePicker(context),
+                )),
+            const SizedBox(height: 12),
+
+            // Search Button for trip
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-
-              // Quick Buy Tickets
-              Row(
-                children: [
-                  Expanded(child: _QuickBuyCard("Pantai Idah Kapuk")),
-                  const SizedBox(width: 12),
-                  Expanded(child: _QuickBuyCard("Central Park Mall")),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Active Ticket Section
-              const Text(
-                "Your Active Ticket",
-                style: AppTextStyles.displayMedium,
-              ),
-              const SizedBox(height: 12),
-
-              Obx(
-                () => Column(
-                  children: controller.tickets.map((ticket) {
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              ticket["date"]!,
-                              style: AppTextStyles.displayMedium,
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Chip(
-                                  label: Text(ticket["type"]!),
-                                  backgroundColor: Colors.orange.shade100,
-                                ),
-                                const SizedBox(width: 8),
-                                const Chip(
-                                  label: Text("Mix"),
-                                  backgroundColor: Colors.grey,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                const Icon(Icons.directions_bus, size: 18),
-                                const SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    "${ticket["bus"]} | Arrival in ${ticket["time"]} at ${ticket["location"]}",
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "See Barcode",
-                                  style: AppTextStyles.buttonSmall,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                onPressed: () {
+                  if (controller.filteredTrips.isNotEmpty) {
+                    Get.toNamed('/trip-selection', arguments: {
+                      "from": controller.fromLocation.value?['name'],
+                      "to": controller.toLocation.value?['name'],
+                      "trips": controller.filteredTrips,
+                      "date": controller.selectedDate.value,
+                    });
+                  } else {
+                    Get.snackbar(
+                      "No Trips Found",
+                      "No available trips for the selected route",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.redAccent,
+                      colorText: Colors.white,
                     );
-                  }).toList(),
-                ),
+                  }
+                },
+                child: const Text("Search Bus", style: AppTextStyles.button),
               ),
-            ],
-          );
-        }),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
 }
 
-// Reusable quick-buy card
+// ✅ Reusable quick-buy card
 class _QuickBuyCard extends StatelessWidget {
   final String title;
   const _QuickBuyCard(this.title);
@@ -247,26 +240,3 @@ class _QuickBuyCard extends StatelessWidget {
   }
 }
 
-// Reusable quick-buy card
-class _QuickBuyCard extends StatelessWidget {
-  final String title;
-  const _QuickBuyCard(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: Text(
-          "Buy ticket to\n$title",
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-    );
-  }
-}

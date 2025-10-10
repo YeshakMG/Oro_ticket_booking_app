@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
 
 class AuthtabsController extends GetxController {
-  RxInt selectedTab = 0.obs; // 0 = Login, 1 = Sign Up
+  // 0 = Login, 1 = SignUp
+  var selectedIndex = 0.obs;
 
-  void changeTab(int index) {
-    selectedTab.value = index;
+  void switchToLogin() {
+    selectedIndex.value = 0;
+  }
+
+  void switchToSignup() {
+    selectedIndex.value = 1;
   }
 }

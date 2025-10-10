@@ -1,23 +1,27 @@
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class MyticketController extends GetxController {
-  //TODO: Implement MyticketController
+  var bookings = <Map<String, dynamic>>[].obs;
+  late Box bookingsBox;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    _initBoxes();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> _initBoxes() async {
+    bookingsBox = await Hive.openBox('bookingsBox');
+    _loadBookings();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void _loadBookings() {
+    final cachedBookings = bookingsBox.values.toList();
+    bookings.value = cachedBookings.cast<Map<String, dynamic>>();
   }
 
-  void increment() => count.value++;
+  void refreshBookings() {
+    _loadBookings();
+  }
 }
