@@ -18,7 +18,9 @@ class MyticketController extends GetxController {
 
   void _loadBookings() {
     final cachedBookings = bookingsBox.values.toList();
-    bookings.value = cachedBookings.cast<Map<String, dynamic>>();
+    bookings.value = cachedBookings.map((b) {
+      return Map<String, dynamic>.from(b as Map);
+    }).toList();
   }
 
   void refreshBookings() {

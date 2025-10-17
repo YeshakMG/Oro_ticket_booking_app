@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:oro_ticket_booking_app/app/modules/home/views/home_view.dart';
 import 'package:oro_ticket_booking_app/app/modules/myticket/views/myticket_view.dart';
 import 'package:oro_ticket_booking_app/app/routes/app_pages.dart';
+import 'package:oro_ticket_booking_app/core/constants/colors.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 
 class AppScaffold extends StatefulWidget {
@@ -32,13 +33,16 @@ class _AppScaffoldState extends State<AppScaffold> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: Colors.green),
+      const SystemUiOverlayStyle(statusBarColor: Color(0xFF029600)),
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title, style: AppTextStyles.heading3),
-        backgroundColor: Colors.green,
+        title: Text(
+          widget.title,
+          style: AppTextStyles.button.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Color(0xFF029600),
         centerTitle: true,
         actions: widget.actions,
       ),
@@ -61,8 +65,9 @@ class _AppScaffoldState extends State<AppScaffold> {
                         break;
                     }
                   },
-              selectedItemColor: Colors.green,
+              selectedItemColor: Color(0xFF029600),
               unselectedItemColor: Colors.grey,
+              backgroundColor: AppColors.card,
               type: BottomNavigationBarType.fixed,
               items: const [
                 BottomNavigationBarItem(
