@@ -98,7 +98,7 @@ class PaymentView extends GetView<PaymentController> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -176,7 +176,7 @@ class PaymentView extends GetView<PaymentController> {
             ),
 
             const SizedBox(height: 16),
-            Container(height: 1, color: Colors.white.withOpacity(0.3)),
+            Container(height: 1, color: Colors.white.withValues(alpha: 0.3)),
             const SizedBox(height: 12),
 
             // Trip Details
@@ -226,7 +226,7 @@ class PaymentView extends GetView<PaymentController> {
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -298,7 +298,7 @@ class PaymentView extends GetView<PaymentController> {
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -330,7 +330,7 @@ class PaymentView extends GetView<PaymentController> {
 
             // Seat Cost
             _buildPriceRow(
-              "${totalSeats} Seat${totalSeats != 1 ? 's' : ''} × $seatPrice ETB",
+              "${totalSeats} Seat${totalSeats != 1 ? 's' : ''} × ${seatPrice} ETB",
               "$totalAmount ETB",
             ),
             const SizedBox(height: 8),
@@ -398,7 +398,7 @@ class PaymentView extends GetView<PaymentController> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, -2),
             ),

@@ -6,7 +6,7 @@ import 'package:oro_ticket_booking_app/core/utils/ethiopian_date_converter.dart'
 import '../controllers/home_controller.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({super.key});
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -290,7 +290,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     "Ready for your next journey?",
                     style: AppTextStyles.caption2.copyWith(fontSize: 14),
@@ -356,7 +356,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 elevation: 4,
-                                shadowColor: Colors.green.withOpacity(0.4),
+                                shadowColor: Colors.green.withValues(alpha: 0.4),
                               ),
                               onPressed: () {
                                 if (controller.filteredTrips.isNotEmpty) {
@@ -407,7 +407,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.green.withOpacity(0.7),
+                                    color: Colors.green.withValues(alpha: 0.7),
                                     blurRadius: 8,
                                     offset: const Offset(0, 3),
                                   ),
@@ -583,7 +583,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withValues(alpha: 0.1),
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, 2),
@@ -595,7 +595,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
-                color: const Color(0xFF029600).withOpacity(0.1),
+                color: const Color(0xFF029600).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(icon, color: const Color(0xFF029600), size: 20),
@@ -649,7 +649,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withValues(alpha: 0.1),
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, 2),
@@ -661,7 +661,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFF029600).withOpacity(0.1),
+                color: const Color(0xFF029600).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(
@@ -729,7 +729,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withValues(alpha: 0.1),
               spreadRadius: 1,
               blurRadius: 8,
               offset: const Offset(0, 4),
@@ -742,7 +742,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFF029600).withOpacity(0.1),
+                color: const Color(0xFF029600).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(icon, color: const Color(0xFF029600), size: 24),
@@ -794,12 +794,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: color.withOpacity(0.2)),
+              border: Border.all(color: color.withValues(alpha: 0.2)),
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 6,
                   offset: const Offset(0, 2),
@@ -860,7 +860,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         leading: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF029600).withOpacity(0.1),
+                            color: const Color(0xFF029600).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Icon(

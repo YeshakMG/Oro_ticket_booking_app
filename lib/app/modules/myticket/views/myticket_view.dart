@@ -56,7 +56,7 @@ class MyticketView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
+                                  color: Colors.black.withValues(alpha: 0.1),
                                   blurRadius: 8,
                                   offset: const Offset(0, 2),
                                 ),
@@ -77,7 +77,7 @@ class MyticketView extends StatelessWidget {
                                         decoration: BoxDecoration(
                                           color: Color(
                                             0xFF029600,
-                                          ).withOpacity(0.2),
+                                          ).withValues(alpha: 0.2),
                                           borderRadius: BorderRadius.circular(
                                             8,
                                           ),
@@ -432,7 +432,7 @@ class MyticketView extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Colors.white,
 
-                  borderRadius: const BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24),
                     topRight: Radius.circular(24),
                   ),

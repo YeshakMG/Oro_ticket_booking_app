@@ -24,7 +24,6 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    
   }
 
   String _formatPhone(String phone) {
@@ -65,17 +64,17 @@ class LoginController extends GetxController {
         await getStorage.write("email", customer['email']);
       }
 
+      // Note: Removed plaintext password storage for security
+      // Only store phone number for convenience, password must be re-entered
       if (rememberMe.value) {
         await box.put("rememberPhone", phone);
-        await box.put("rememberPassword", password);
       } else {
         await box.delete("rememberPhone");
-        await box.delete("rememberPassword");
       }
 
       if (kDebugMode) debugPrint("✅ Login successful. Token saved.");
       Get.snackbar("Success", "Login successful");
-      Get.offAllNamed(Routes.HOME);
+      Get.offAllNamed(Routes.home);
     } catch (e) {
       if (kDebugMode) debugPrint("💥 Exception: $e");
       Get.snackbar("Error", e.toString());
@@ -89,5 +88,42 @@ class LoginController extends GetxController {
     phoneController.dispose();
     passwordController.dispose();
     super.onClose();
+  }
+
+  /// Enhanced input validation
+  String? validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Phone number is required';
+    }
+
+    // Remove all spaces and non-numeric characters except +
+    String cleanValue = value.replaceAll(RegExp(r'[^\d+]'), '');
+
+    // Check length constraints
+    if (cleanValue.length < 9 || cleanValue.length > 13) {
+      return 'Phone number must be 9-13 digits';
+    }
+
+    // Ethiopian phone number validation with specific length limits
+    // Format 1: +251XXXXXXXXX (13 chars: +251 + 10 digits)
+    // Format 2: 0XXXXXXXXX (10 chars: 0 + 9 digits)
+    // Format 3: XXXXXXXXX (9 chars: 9 digits starting with 9 or 7)
+    final phoneRegex = RegExp(r'^(\+251[9|7][0-9]{8}|0[9|7][0-9]{8}|[9|7][0-9]{8})$');
+
+    if (!phoneRegex.hasMatch(cleanValue)) {
+      return 'Enter valid Ethiopian number: +251XXXXXXXXX, 0XXXXXXXXX, or XXXXXXXXX';
+    }
+
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    return null;
   }
 }

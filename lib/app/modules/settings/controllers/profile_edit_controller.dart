@@ -4,7 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:oro_ticket_booking_app/app/modules/auth/auth_service.dart';
 
 class ProfileEditController extends GetxController {
-  final AuthService _authService = Get.find<AuthService>();
   final box = Hive.box('appBox');
 
   // Form controllers

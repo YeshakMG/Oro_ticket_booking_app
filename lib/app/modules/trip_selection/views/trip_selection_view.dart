@@ -41,7 +41,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -70,7 +70,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
                   Container(
                     width: 2,
                     height: 30,
-                    color: Colors.white.withOpacity(0.5),
+                    color: Colors.white.withValues(alpha: 0.5),
                   ),
                   Icon(
                     Icons.radio_button_checked,
@@ -142,7 +142,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
           const SizedBox(height: 16),
 
           // Divider
-          Container(height: 1, color: Colors.white.withOpacity(0.3)),
+          Container(height: 1, color: Colors.white.withValues(alpha: 0.3)),
 
           const SizedBox(height: 12),
 
@@ -232,7 +232,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -468,14 +468,12 @@ class TripSelectionView extends GetView<TripSelectionController> {
       children: [
         Text("Amenities: ", style: AppTextStyles.caption),
         const SizedBox(width: 8),
-        ...amenities
-            .map(
-              (icon) => Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Icon(icon, color: Colors.green, size: 18),
-              ),
-            )
-            .toList(),
+        ...amenities.map(
+          (icon) => Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Icon(icon, color: Colors.green, size: 18),
+          ),
+        ),
       ],
     );
   }

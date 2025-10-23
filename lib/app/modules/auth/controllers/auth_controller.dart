@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../home/controllers/home_controller.dart';
-import '../../settings/controllers/settings_controller.dart';
 import '../auth_service.dart';
-import '../../../data/models/user_model.dart';
 
 class AuthController extends GetxController {
   final formKey = GlobalKey<FormState>();

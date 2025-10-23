@@ -63,7 +63,7 @@ class SignUpView extends GetView<SignUpController> {
                       Text(
                         "Create an account or log in to explore about our app",
                         style: AppTextStyles.caption.copyWith(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           fontSize: 13,
                         ),
                       ),
@@ -128,7 +128,7 @@ class SignUpView extends GetView<SignUpController> {
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.05),
+                                      color: Colors.black.withValues(alpha: 0.05),
                                       blurRadius: 4,
                                       offset: const Offset(0, 2),
                                     ),

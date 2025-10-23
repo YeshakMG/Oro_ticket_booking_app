@@ -14,7 +14,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load(fileName: ".env");
-  print("Loaded .env successfully");
+  // print("Loaded .env successfully");
 
   await GetStorage.init();
   await Hive.initFlutter();
@@ -26,7 +26,7 @@ Future<void> main() async {
 
   String? token = box.get("token");
 
-  runApp(MyApp(initialRoute: token != null ? Routes.HOME : Routes.LOGIN));
+  runApp(MyApp(initialRoute: token != null ? Routes.home : Routes.login));
 }
 
 class MyApp extends StatelessWidget {

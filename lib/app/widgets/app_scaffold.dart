@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:oro_ticket_booking_app/app/modules/home/views/home_view.dart';
-import 'package:oro_ticket_booking_app/app/modules/myticket/views/myticket_view.dart';
+import 'package:oro_ticket_booking_app/app/routes/app_pages.dart';
 import 'package:oro_ticket_booking_app/app/routes/app_pages.dart';
 import 'package:oro_ticket_booking_app/core/constants/colors.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
@@ -55,13 +54,13 @@ class _AppScaffoldState extends State<AppScaffold> {
                   (index) {
                     switch (index) {
                       case 0:
-                        Get.offAllNamed(Routes.HOME);
+                        Get.offAllNamed(Routes.home);
                         break;
                       case 1:
-                        Get.offAllNamed(Routes.MYTICKET);
+                        Get.offAllNamed(Routes.myticket);
                         break;
                       case 2:
-                        Get.offAllNamed(Routes.SETTINGS);
+                        Get.offAllNamed(Routes.settings);
                         break;
                     }
                   },

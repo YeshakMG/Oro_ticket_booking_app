@@ -63,7 +63,7 @@ class LoginView extends GetView<LoginController> {
                       Text(
                         "Create an account or log in to explore about our app",
                         style: AppTextStyles.caption.copyWith(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           fontSize: 13,
                         ),
                       ),
@@ -109,7 +109,7 @@ class LoginView extends GetView<LoginController> {
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.05),
+                                      color: Colors.black.withValues(alpha: 0.05),
                                       blurRadius: 4,
                                       offset: const Offset(0, 2),
                                     ),
@@ -172,27 +172,15 @@ class LoginView extends GetView<LoginController> {
           TextFormField(
             controller: controller.phoneController,
             keyboardType: TextInputType.phone,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Phone number is required';
-              }
-              final phonePattern = RegExp(r'^(?:\251\d{8}|09\d{8})$');
-              if (!phonePattern.hasMatch(value)) {
-                return "Enter a valid Ethiopian phone number (+2519xxxxxxx or 09xxxxxxx)";
-              }
-              return null;
-            },
+            maxLength: 13,
+            validator: controller.validatePhone,
             decoration: InputDecoration(
               labelText: "Phone Number",
               labelStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
-              hintText: "9xxxxxxxx",
-              prefixText: "+251 ",
+              hintText: "9xxxxxxxx or +2519xxxxxxxxx",
               hintStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
               prefixIcon: const Icon(Icons.phone, color: Colors.grey),
-              prefixStyle: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+              // Removed prefixStyle to allow flexible input
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: Color(0xFFEDF1F3)),
@@ -204,6 +192,7 @@ class LoginView extends GetView<LoginController> {
                 horizontal: 12,
                 vertical: 14,
               ),
+              counterText: "", // Hide character counter
             ),
           ),
           const SizedBox(height: 20),

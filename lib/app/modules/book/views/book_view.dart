@@ -6,9 +6,10 @@ import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 import '../controllers/book_controller.dart';
 
 class BookView extends GetView<BookController> {
+  const BookView({super.key});
+
   @override
-  BookController controller = Get.put(BookController());
-  BookView({super.key});
+  BookController get controller => Get.put(BookController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class BookView extends GetView<BookController> {
           children: [
             // Compact Trip Header
             // _buildCompactTripHeader(),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Seat Selection Section
             Expanded(
@@ -306,7 +307,7 @@ class BookView extends GetView<BookController> {
       icon = Icons.check;
     } else {
       backgroundColor = Color(0xFF10B981);
-      borderColor = Color(0xFF10B981).withOpacity(0.3);
+      borderColor = Color(0xFF10B981).withValues(alpha: 0.3);
     }
 
     return GestureDetector(
@@ -328,7 +329,7 @@ class BookView extends GetView<BookController> {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: backgroundColor.withOpacity(0.3),
+                    color: backgroundColor.withValues(alpha: 0.3),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
@@ -415,7 +416,7 @@ class BookView extends GetView<BookController> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, -2),
             ),

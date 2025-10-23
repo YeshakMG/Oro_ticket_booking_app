@@ -171,8 +171,9 @@ class SettingsView extends GetView<SettingsController> {
                       ),
                       underline: const SizedBox(),
                       onChanged: (value) {
-                        if (value != null)
+                        if (value != null) {
                           controller.selectedCategory.value = value;
+                        }
                       },
                       items: categories
                           .map(

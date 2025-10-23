@@ -71,7 +71,7 @@ class AuthService {
     final url = _buildUri(_loginPath);
     if (kDebugMode) {
       debugPrint('➡️  POST $url');
-      debugPrint('📨 Payload: {"phone": "$phone", "password": "••••••"}');
+      debugPrint('📨 Payload: {"phone": "$phone", "password": "[REDACTED]"}');
     }
 
     final response = await http.post(
@@ -284,15 +284,15 @@ class AuthService {
   Future<Map<String, dynamic>> submitFeedback({
     required String category,
     required String message,
+    required String userToken,
   }) async {
     final url = _buildUri(_submitComplaintPath);
-    final token = dotenv.env['API_TOKEN'] ?? ""; // Assuming token is needed
 
     final response = await http.post(
       url,
       headers: {
         "Content-Type": "application/json",
-        if (token.isNotEmpty) "Authorization": "Bearer $token",
+        "Authorization": "Bearer $userToken",
       },
       body: jsonEncode({
         "category": category,
