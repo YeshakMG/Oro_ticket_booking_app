@@ -11,7 +11,7 @@ class SignUpView extends GetView<SignUpController> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: Text("Create Account"),
+        title: Text("create_account".tr),
         centerTitle: true,
         backgroundColor: Colors.green,
         elevation: 0,
@@ -22,7 +22,7 @@ class SignUpView extends GetView<SignUpController> {
           children: [
             // Title + Subtitle
             Text(
-              "Welcome to Oro Ticket Booking",
+              "welcome_oro_ticket".tr,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -32,7 +32,7 @@ class SignUpView extends GetView<SignUpController> {
             ),
             const SizedBox(height: 6),
             Text(
-              "Fill in your details to sign up and start booking your tickets easily.",
+              "fill_details_signup".tr,
               style: TextStyle(color: Colors.black54, fontSize: 14),
               textAlign: TextAlign.center,
             ),
@@ -182,7 +182,7 @@ class SignUpView extends GetView<SignUpController> {
                             child: controller.isLoading.value
                                 ? CircularProgressIndicator(color: Colors.white)
                                 : Text(
-                                    "Sign Up",
+                                    "sign_up".tr,
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
@@ -200,7 +200,7 @@ class SignUpView extends GetView<SignUpController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Already registered? ",
+                Text("already_registered".tr,
                     style: TextStyle(color: Colors.black87)),
                 TextButton(
                   onPressed: () {
@@ -208,7 +208,7 @@ class SignUpView extends GetView<SignUpController> {
                     authTabsController.switchToLogin();
                   },
                   child: Text(
-                    "Login",
+                    "login".tr,
                     style: TextStyle(
                         color: Colors.green, fontWeight: FontWeight.bold),
                   ),

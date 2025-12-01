@@ -9,7 +9,7 @@ class PaymentView extends GetView<PaymentController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Confirm Booking"),
+        title: Text("confirm_booking".tr),
         backgroundColor: Colors.green,
       ),
       body: Padding(
@@ -39,7 +39,7 @@ class PaymentView extends GetView<PaymentController> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text("Selected Seats:",
+            Text("selected_seats".tr,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             Wrap(
@@ -55,7 +55,7 @@ class PaymentView extends GetView<PaymentController> {
             ),
             const SizedBox(height: 16),
             Text(
-              "Total Amount: ${(controller.selectedSeats.length * (controller.selectedTrip.value?['price'] ?? 0)).toStringAsFixed(2)} ETB",
+              "${"total_amount".tr}: ${(controller.selectedSeats.length * (controller.selectedTrip.value?['price'] ?? 0)).toStringAsFixed(2)} ETB",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
@@ -68,7 +68,7 @@ class PaymentView extends GetView<PaymentController> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
                 onPressed: () => controller.processPayment(),
-                child: const Text("Pay Now",
+                child: Text("pay_now".tr,
                     style: TextStyle(color: Colors.white, fontSize: 16)),
                     
               ),

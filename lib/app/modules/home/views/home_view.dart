@@ -37,7 +37,7 @@ class _HomeViewState extends State<HomeView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Select Ethiopian Date"),
+          title: Text("select_ethiopian_date".tr),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -73,7 +73,7 @@ class _HomeViewState extends State<HomeView> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancel"),
+              child: Text("cancel".tr),
             ),
             TextButton(
               onPressed: () {
@@ -81,7 +81,7 @@ class _HomeViewState extends State<HomeView> {
                 controller.selectedDate.value = EthiopianDateConverter.toGregorian(selectedEthiopian);
                 Navigator.of(context).pop();
               },
-              child: const Text("OK"),
+              child: Text("ok".tr),
             ),
           ],
         );
@@ -106,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Greeting
-            const Text("Hello,", style: AppTextStyles.caption2),
+            Text("hello".tr, style: AppTextStyles.caption2),
             Obx(() => Text(controller.userName.value, style: AppTextStyles.heading3)),
             const SizedBox(height: 16),
 
@@ -205,7 +205,7 @@ class _HomeViewState extends State<HomeView> {
                     );
                   }
                 },
-                child: const Text("Search Bus", style: AppTextStyles.button),
+                child: Text("search_bus".tr, style: AppTextStyles.button),
               ),
             ),
             const SizedBox(height: 20),
@@ -231,7 +231,7 @@ class _QuickBuyCard extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "Buy ticket to\n$title",
+          "${"buy_ticket_to".tr}\n$title",
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 14),
         ),

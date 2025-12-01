@@ -95,7 +95,7 @@ class SignUpController extends GetxController {
         "full_name": fullNameController.text.trim(),
         "email": emailController.text.trim(),
         "phone": formattedPhone,
-        "role_id": "17c6bdb7-9fb8-456f-ad52-04b49eeeace1",
+        "role_id": "8f07f450-2acf-415f-b071-f46b532a079f",
         "password": passwordController.text.trim(),
       };
 

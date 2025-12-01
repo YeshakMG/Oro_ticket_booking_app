@@ -22,11 +22,11 @@ class MyticketView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Your Booked Tickets", style: AppTextStyles.displayMedium),
+            Text("your_booked_tickets".tr, style: AppTextStyles.displayMedium),
             const SizedBox(height: 12),
             Expanded(
               child: Obx(() => controller.bookings.isEmpty
-                ? const Center(child: Text("No bookings found"))
+                ? Center(child: Text("no_bookings_found".tr))
                 : ListView.builder(
                   itemCount: controller.bookings.length,
                   itemBuilder: (context, index) {
@@ -82,8 +82,8 @@ class MyticketView extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
-                                child: const Text(
-                                  "Show QR Code",
+                                child: Text(
+                                  "show_qr_code".tr,
                                   style: AppTextStyles.buttonSmall,
                                 ),
                               ),
@@ -142,8 +142,8 @@ class MyticketView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                "Ticket QR Code",
+              Text(
+                "ticket_qr_code".tr,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -157,17 +157,17 @@ class MyticketView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text("Booking ID: $bookingId", style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text("${"booking_id".tr}: $bookingId", style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
-              Text("Passenger: $passengerName"),
+              Text("${"passenger".tr}: $passengerName"),
               const SizedBox(height: 4),
-              Text("Phone: $phone"),
+              Text("${"phone".tr}: $phone"),
               const SizedBox(height: 4),
-              Text("Route: ${trip['departure']} → ${trip['destination']}"),
+              Text("${"route".tr}: ${trip['departure']} → ${trip['destination']}"),
               const SizedBox(height: 4),
-              Text("Seats: ${selectedSeats.join(', ')}"),
+              Text("${"selected_seats".tr}: ${selectedSeats.join(', ')}"),
               const SizedBox(height: 4),
-              Text("Amount: $totalAmount ETB"),
+              Text("${"amount".tr}: $totalAmount ETB"),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -175,8 +175,8 @@ class MyticketView extends StatelessWidget {
                   color: Colors.green.shade100,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text(
-                  "Payment Status: Paid",
+                child: Text(
+                  "payment_status_paid".tr,
                   style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
@@ -190,7 +190,7 @@ class MyticketView extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("Close"),
+                    child: Text("close".tr),
                   ),
                 ],
               ),

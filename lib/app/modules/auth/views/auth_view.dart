@@ -27,7 +27,7 @@ class AuthView extends GetView<AuthController> {
                   children: [
                     // Title
                     Text(
-                      controller.isLogin.value ? "Login" : "Sign Up",
+                      controller.isLogin.value ? "login_text".tr : "sign_up_text".tr,
                       style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
@@ -133,7 +133,7 @@ class AuthView extends GetView<AuthController> {
                                 minimumSize: const Size(double.infinity, 50),
                                 backgroundColor: Colors.green,
                               ),
-                              child: Text(controller.isLogin.value ? "Login" : "Sign Up"),
+                              child: Text(controller.isLogin.value ? "login_text".tr : "sign_up_text".tr),
                             );
                     }),
                     const SizedBox(height: 16),

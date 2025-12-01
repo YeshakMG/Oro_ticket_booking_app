@@ -31,7 +31,7 @@ class BookView extends GetView<BookController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Trip Details",
+                        "trip_details".tr,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
@@ -43,7 +43,7 @@ class BookView extends GetView<BookController> {
                             labelStyle: const TextStyle(color: Colors.white),
                           ),
                           const SizedBox(width: 8),
-                          Chip(label: Text("Price: ${controller.selectedTrip.value?['price'] ?? 'N/A'} ETB")),
+                          Chip(label: Text("${"price".tr}: ${controller.selectedTrip.value?['price'] ?? 'N/A'} ETB")),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -60,7 +60,7 @@ class BookView extends GetView<BookController> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Bus ${controller.selectedTrip.value?['plateNumber'] ?? 'N/A'} • Seats Available: ${controller.selectedTrip.value?['seatsAvailable'] ?? 'N/A'}",
+                        "${"bus".tr} ${controller.selectedTrip.value?['plateNumber'] ?? 'N/A'} • ${"seats_available".tr}: ${controller.selectedTrip.value?['seatsAvailable'] ?? 'N/A'}",
                       ),
                       const SizedBox(height: 12),
 
@@ -178,8 +178,8 @@ class BookView extends GetView<BookController> {
                         });
                       }
                     },
-                    child: const Text(
-                      "Buy Now",
+                    child: Text(
+                      "buy_now".tr,
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),

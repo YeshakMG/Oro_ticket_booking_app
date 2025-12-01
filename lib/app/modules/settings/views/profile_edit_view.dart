@@ -86,7 +86,7 @@ class ProfileEditView extends GetView<ProfileEditController> {
                                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                 ),
                               )
-                            : const Text("Update Profile"),
+                            : Text("update_profile".tr),
                       )),
                     ),
                   ],
@@ -190,7 +190,7 @@ class ProfileEditView extends GetView<ProfileEditController> {
                                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                 ),
                               )
-                            : const Text("Change Password"),
+                            : Text("change_password".tr),
                       )),
                     ),
                   ],

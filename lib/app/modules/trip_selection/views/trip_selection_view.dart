@@ -18,7 +18,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Available Trips from ${controller.from.value} to ${controller.to.value}",
+              "${"available_trips_from_to".tr} ${controller.from.value} ${"to".tr} ${controller.to.value}",
               style: AppTextStyles.displayMedium,
             ),
             const SizedBox(height: 16),
@@ -44,7 +44,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
                               ),
                               const SizedBox(width: 8),
                               Chip(
-                                label: Text("Seats: ${trip['seatsAvailable'] ?? 'N/A'}"),
+                                label: Text("${"seats".tr}: ${trip['seatsAvailable'] ?? 'N/A'}"),
                               ),
                             ],
                           ),
@@ -71,8 +71,8 @@ class TripSelectionView extends GetView<TripSelectionController> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              child: const Text(
-                                "Select Trip",
+                              child: Text(
+                                "select_trip".tr,
                                 style: AppTextStyles.buttonSmall,
                               ),
                             ),

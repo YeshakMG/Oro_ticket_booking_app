@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -66,6 +67,7 @@ class SettingsController extends GetxController {
   void changeLanguage(String code) async {
     selectedLanguageCode.value = code;
     await box.put("language", code);
+    Get.updateLocale(Locale(code));
   }
 
   Future<void> submitFeedback() async {
@@ -79,7 +81,12 @@ class SettingsController extends GetxController {
     }
 
     try {
+      final token = box.get("token");
+      if (token == null || token.isEmpty) {
+        throw Exception('Authentication token is missing or invalid');
+      }
       await _authService.submitFeedback(
+        token: token,
         category: selectedCategory.value,
         message: feedback.value,
       );
@@ -142,7 +149,11 @@ class SettingsController extends GetxController {
 
   Future<void> fetchComplaintCategories() async {
     try {
-      final categories = await _authService.fetchComplaintCategories();
+      final token = box.get("token");
+      if (token == null || token.isEmpty) {
+        throw Exception('Authentication token is missing or invalid');
+      }
+      final categories = await _authService.fetchComplaintCategories(token);
       complaintCategories.assignAll(categories);
     } catch (e) {
       debugPrint("Error fetching complaint categories: $e");

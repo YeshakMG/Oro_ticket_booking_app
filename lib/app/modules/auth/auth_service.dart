@@ -264,41 +264,59 @@ class AuthService {
     }
   }
 
-  /// Fetch complaint categories
-  Future<List<Map<String, dynamic>>> fetchComplaintCategories() async {
+  /// Fetch complaint categories with authentication
+  Future<List<Map<String, dynamic>>> fetchComplaintCategories(String token) async {
     final url = _buildUri(_complaintReasonsPath);
     final response = await http.get(
       url,
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json"
+      },
     );
+
+    debugPrint("fetchComplaintCategories: Response status: ${response.statusCode}");
+    debugPrint("fetchComplaintCategories: Response body: ${response.body}");
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      return List<Map<String, dynamic>>.from(data);
+      List<dynamic> dataList = [];
+      if (data is List) {
+        dataList = data;
+      } else if (data is Map) {
+        final d = data['data'] ?? data['categories'] ?? data['complaint_categories'] ?? [];
+        if (d is List) {
+          dataList = d;
+        }
+      }
+      return List<Map<String, dynamic>>.from(dataList);
     } else {
       throw Exception(data["message"] ?? "Fetching complaint categories failed");
     }
   }
 
-  /// Submit feedback
+  /// Submit feedback with authentication
   Future<Map<String, dynamic>> submitFeedback({
+    required String token,
     required String category,
     required String message,
   }) async {
     final url = _buildUri(_submitComplaintPath);
-    final token = dotenv.env['API_TOKEN'] ?? ""; // Assuming token is needed
 
     final response = await http.post(
       url,
       headers: {
         "Content-Type": "application/json",
-        if (token.isNotEmpty) "Authorization": "Bearer $token",
+        "Authorization": "Bearer $token",
       },
       body: jsonEncode({
         "category": category,
         "message": message,
       }),
     );
+
+    debugPrint("submitFeedback: Response status: ${response.statusCode}");
+    debugPrint("submitFeedback: Response body: ${response.body}");
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {

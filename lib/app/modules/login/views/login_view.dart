@@ -10,7 +10,7 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text('login'.tr),
         backgroundColor: Colors.green,
         actions: [
           Get.isRegistered<SettingsController>()
@@ -53,8 +53,8 @@ class LoginView extends GetView<LoginController> {
                   width: 80,
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  "Oromia Transport Agency",
+                Text(
+                  "oromia_transport_agency".tr,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -153,8 +153,8 @@ class LoginView extends GetView<LoginController> {
                   ),
                   child: loginController.isLoading.value
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          "Login",
+                      : Text(
+                          "login".tr,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
@@ -167,13 +167,13 @@ class LoginView extends GetView<LoginController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Don’t have an account? "),
+              Text("dont_have_account".tr),
               TextButton(
                 onPressed: () {
                   Get.toNamed('/signup');
                 },
-                child: const Text(
-                  "Sign Up",
+                child: Text(
+                  "sign_up".tr,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.green,

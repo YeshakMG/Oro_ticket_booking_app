@@ -86,18 +86,7 @@ class HomeController extends GetxController {
       debugPrint("fetchTerminals: Terminals list: $terminals");
     } catch (e) {
       debugPrint("Error fetching terminals from API: $e");
-      debugPrint("fetchTerminals: Using dummy terminal data");
-      // Use dummy terminal data as fallback
-      terminals.value = [
-        {'id': 1, 'name': 'Addis Ababa Terminal'},
-        {'id': 2, 'name': 'Dire Dawa Terminal'},
-        {'id': 3, 'name': 'Hawassa Terminal'},
-        {'id': 4, 'name': 'Bahir Dar Terminal'},
-        {'id': 5, 'name': 'Mekelle Terminal'},
-        {'id': 6, 'name': 'Gondar Terminal'},
-        {'id': 7, 'name': 'Jimma Terminal'},
-        {'id': 8, 'name': 'Dessie Terminal'},
-      ];
+      // Terminals will remain empty if API fails
     }
 
     // Set default from/to

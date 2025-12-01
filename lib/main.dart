@@ -7,16 +7,17 @@ import 'package:oro_ticket_booking_app/app/data/models/user_model.dart';
 import 'package:oro_ticket_booking_app/app/data/models/trip_model.dart';
 import 'package:oro_ticket_booking_app/app/modules/auth/authtabs/authtabs_controller.dart';
 import 'package:oro_ticket_booking_app/app/modules/signup/controllers/signup_controller.dart';
+import 'package:oro_ticket_booking_app/core/translations.dart';
 
 import 'app/routes/app_pages.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  
+
     await dotenv.load(fileName: ".env");
     print("Loaded .env successfully");
-  
+
     await GetStorage.init();
     await Hive.initFlutter();
     Hive.registerAdapter(UserModelAdapter());
@@ -27,12 +28,17 @@ Future<void> main() async {
 
   String? token = box.get("token");
 
-  runApp(MyApp(initialRoute: token != null ? Routes.HOME : Routes.LOGIN));
+  // Set initial locale based on saved language
+  final savedLang = box.get("language") ?? "en";
+  final initialLocale = Locale(savedLang);
+
+  runApp(MyApp(initialRoute: token != null ? Routes.HOME : Routes.LOGIN, initialLocale: initialLocale));
 }
 
 class MyApp extends StatelessWidget {
   final String initialRoute;
-  const MyApp({super.key, required this.initialRoute});
+  final Locale initialLocale;
+  const MyApp({super.key, required this.initialRoute, required this.initialLocale});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +51,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: initialRoute,
       getPages: AppPages.routes,
+      translations: AppTranslations(),
+      locale: initialLocale,
+      fallbackLocale: const Locale('en', 'US'),
     );
   }
 }
