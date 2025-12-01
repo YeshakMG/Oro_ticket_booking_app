@@ -21,70 +21,73 @@ class SettingsView extends GetView<SettingsController> {
           children: [
             // Profile Section
             Center(
-              child: Card(
-                margin: const EdgeInsets.only(bottom: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
                 ),
-                elevation: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Avatar on top
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.green,
-                        child: Text(
-                          controller.userName.value.isNotEmpty
-                              ? controller.userName.value[0].toUpperCase()
-                              : "?",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Avatar on top
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.green,
+                      child: Text(
+                        controller.userName.value.isNotEmpty
+                            ? controller.userName.value[0].toUpperCase()
+                            : "?",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      // Name and phone below
-                      Column(
-                        children: [
-                          Text(
-                            controller.userName.value,
-                            style: AppTextStyles.heading3,
-                            textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    // Name and phone below
+                    Column(
+                      children: [
+                        Text(
+                          controller.userName.value,
+                          style: AppTextStyles.heading3,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          controller.userPhone.value,
+                          style: AppTextStyles.caption2.copyWith(
+                            color: Colors.grey.shade600,
                           ),
-                          const SizedBox(height: 2),
-                          Text(
-                            controller.userPhone.value,
-                            style: AppTextStyles.caption2.copyWith(
-                              color: Colors.grey.shade600,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // Edit button
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        Get.to(() => const ProfileEditView());
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                        size: 16,
+                        color: Colors.green,
                       ),
-                      const SizedBox(height: 8),
-                      // Edit button
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Get.to(() => const ProfileEditView());
-                        },
-                        icon: const Icon(Icons.edit, size: 16, color: Colors.green),
-                        label: Text("edit_profile".tr),
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.green),
-                          foregroundColor: Colors.green,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                      label: const Text("Edit Profile"),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.green),
+                        foregroundColor: Colors.green,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -96,7 +99,7 @@ class SettingsView extends GetView<SettingsController> {
               icon: Icons.settings,
               children: [
                 // Language Preference
-                Text("language".tr, style: AppTextStyles.body1),
+                Text("Language", style: AppTextStyles.subtitle2),
                 const SizedBox(height: 8),
                 Obx(() {
                   final items = controller.languages;
@@ -115,10 +118,15 @@ class SettingsView extends GetView<SettingsController> {
                         if (value != null) controller.changeLanguage(value);
                       },
                       items: items
-                          .map((lang) => DropdownMenuItem(
-                                value: lang['code'],
-                                child: Text('${lang['code']!.toUpperCase()} — ${lang['nativeName']}'),
-                              ))
+                          .map(
+                            (lang) => DropdownMenuItem(
+                              value: lang['code'],
+                              child: Text(
+                                '${lang['code']!.toUpperCase()} — ${lang['nativeName']}',
+                                style: AppTextStyles.subtitle2,
+                              ),
+                            ),
+                          )
                           .toList(),
                     ),
                   );
@@ -133,7 +141,7 @@ class SettingsView extends GetView<SettingsController> {
               icon: Icons.support,
               children: [
                 // Complaint Category
-                Text("category".tr, style: AppTextStyles.body1),
+                Text("Category", style: AppTextStyles.subtitle2),
                 const SizedBox(height: 8),
                 Obx(() {
                   final categories = controller.complaintCategories;
@@ -147,16 +155,26 @@ class SettingsView extends GetView<SettingsController> {
                     child: DropdownButton<String>(
                       value: selected.isEmpty ? null : selected,
                       isExpanded: true,
-                      hint: Text("select_category".tr),
+                      hint: const Text(
+                        "Select a category",
+                        style: AppTextStyles.subtitle2,
+                      ),
                       underline: const SizedBox(),
                       onChanged: (value) {
-                        if (value != null) controller.selectedCategory.value = value;
+                        if (value != null) {
+                          controller.selectedCategory.value = value;
+                        }
                       },
                       items: categories
-                          .map((category) => DropdownMenuItem<String>(
-                                value: category['name'] as String,
-                                child: Text(category['name'] as String),
-                              ))
+                          .map(
+                            (category) => DropdownMenuItem<String>(
+                              value: category['name'] as String,
+                              child: Text(
+                                category['name'] as String,
+                                style: AppTextStyles.subtitle2,
+                              ),
+                            ),
+                          )
                           .toList(),
                     ),
                   );
@@ -164,21 +182,26 @@ class SettingsView extends GetView<SettingsController> {
                 const SizedBox(height: 16),
 
                 // Complaint & Feedback
-                Text("message".tr, style: AppTextStyles.body1),
+                Text("Message", style: AppTextStyles.subtitle2),
                 const SizedBox(height: 8),
-                Obx(() => TextFormField(
-                      initialValue: controller.feedback.value,
-                      onChanged: (val) => controller.feedback.value = val,
-                      decoration: InputDecoration(
-                        hintText: "write_complaint".tr,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey.shade50,
+                Obx(
+                  () => TextFormField(
+                    initialValue: controller.feedback.value,
+                    onChanged: (val) => controller.feedback.value = val,
+                    decoration: InputDecoration(
+                      hintText: "Write your complaint or feedback here...",
+                      hintStyle: AppTextStyles.subtitle2.copyWith(
+                        color: Colors.grey.shade400,
                       ),
-                      maxLines: 4,
-                    )),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.shade50,
+                    ),
+                    maxLines: 4,
+                  ),
+                ),
                 const SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
@@ -191,7 +214,10 @@ class SettingsView extends GetView<SettingsController> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text("submit_feedback".tr),
+                    child: const Text(
+                      "Submit Feedback",
+                      style: AppTextStyles.button,
+                    ),
                   ),
                 ),
               ],
@@ -205,20 +231,25 @@ class SettingsView extends GetView<SettingsController> {
               children: [
                 _buildPolicyItem(
                   icon: Icons.description,
-                  title: "terms_of_service".tr,
-                  onTap: () => _showPolicyDialog("terms_of_service".tr, "terms_content".tr),
+                  title: "Terms of Service",
+                  onTap: () => _showPolicyDialog(
+                    "Terms of Service",
+                    "terms_of_service_content".tr,
+                  ),
                 ),
                 const Divider(),
                 _buildPolicyItem(
                   icon: Icons.privacy_tip,
-                  title: "privacy_policy".tr,
-                  onTap: () => _showPolicyDialog("privacy_policy".tr, "privacy_content".tr),
+                  title: "Privacy Policy",
+                  onTap: () =>
+                      _showPolicyDialog("Privacy Policy", "privacy_policy_content".tr),
                 ),
                 const Divider(),
                 _buildPolicyItem(
                   icon: Icons.help,
-                  title: "help_support".tr,
-                  onTap: () => _showPolicyDialog("help_support".tr, "help_content".tr),
+                  title: "Help & Support",
+                  onTap: () =>
+                      _showPolicyDialog("Help & Support", "help_support_content".tr),
                 ),
                 const Divider(),
                 _buildPolicyItem(
@@ -237,7 +268,10 @@ class SettingsView extends GetView<SettingsController> {
               child: ElevatedButton.icon(
                 onPressed: controller.logout,
                 icon: const Icon(Icons.logout),
-                label: Text("logout".tr),
+                label: Text(
+                  "Logout",
+                  style: AppTextStyles.button.copyWith(color: Colors.red),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red.shade50,
                   foregroundColor: Colors.red,
@@ -256,7 +290,6 @@ class SettingsView extends GetView<SettingsController> {
     );
   }
 
-
   Widget _buildPolicyItem({
     required IconData icon,
     required String title,
@@ -264,7 +297,7 @@ class SettingsView extends GetView<SettingsController> {
   }) {
     return ListTile(
       leading: Icon(icon, color: Colors.green),
-      title: Text(title, style: AppTextStyles.body1),
+      title: Text(title, style: AppTextStyles.subtitle2),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,
       contentPadding: EdgeInsets.zero,
@@ -278,12 +311,10 @@ class SettingsView extends GetView<SettingsController> {
   }) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ExpansionTile(
         leading: Icon(icon, color: Colors.green),
-        title: Text(title, style: AppTextStyles.heading3),
+        title: Text(title, style: AppTextStyles.subtitle2),
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
@@ -300,14 +331,15 @@ class SettingsView extends GetView<SettingsController> {
   void _showPolicyDialog(String title, String content) {
     Get.dialog(
       AlertDialog(
-        title: Text(title),
-        content: SingleChildScrollView(
-          child: Text(content),
-        ),
+        title: Text(title, style: AppTextStyles.heading3),
+        content: SingleChildScrollView(child: Text(content)),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: Text("close".tr),
+            child: Text(
+              "Close",
+              style: AppTextStyles.buttonSmall.copyWith(color: Colors.black),
+            ),
           ),
         ],
       ),

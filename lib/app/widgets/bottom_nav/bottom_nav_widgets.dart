@@ -38,4 +38,3 @@ class BottomNavWidget extends StatelessWidget {
     );
   }
 }
-

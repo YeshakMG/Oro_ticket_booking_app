@@ -3,17 +3,17 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const HOME = _Paths.HOME;
-  static const LOGIN = _Paths.LOGIN;
-  static const SIGNUP = _Paths.SIGNUP;
-  static const PROFILE = _Paths.PROFILE;
-  static const AUTH = _Paths.AUTH;
-  static const SPLASH = _Paths.SPLASH;
-  static const BOOK = _Paths.BOOK;
-  static const PAYMENT = _Paths.PAYMENT;
-  static const SETTINGS = _Paths.SETTINGS;
-  static const MYTICKET = _Paths.MYTICKET;
-  static const TRIP_SELECTION = _Paths.TRIP_SELECTION;
+  static const home = _Paths.HOME;
+  static const login = _Paths.LOGIN;
+  static const signup = _Paths.SIGNUP;
+  static const profile = _Paths.PROFILE;
+  static const auth = _Paths.AUTH;
+  static const splash = _Paths.SPLASH;
+  static const book = _Paths.BOOK;
+  static const payment = _Paths.PAYMENT;
+  static const settings = _Paths.SETTINGS;
+  static const myticket = _Paths.MYTICKET;
+  static const tripSelection = _Paths.TRIP_SELECTION;
 }
 
 abstract class _Paths {

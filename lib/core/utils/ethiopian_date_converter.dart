@@ -27,7 +27,7 @@ class EthiopianDateConverter {
   /// Converts an Ethiopian date to Gregorian date.
   static DateTime toGregorian(EthiopianDate ethiopianDate) {
     // Constants for Ethiopian calendar calculation
-    const int jdOffset = 1723856; // Julian day offset
+    // const int jdOffset = 1723856; // Julian day offset
     
     // Calculate Julian day number from Ethiopian date
     int jdn = _ethiopianToJDN(ethiopianDate);

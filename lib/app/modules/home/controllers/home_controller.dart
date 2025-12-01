@@ -2,10 +2,8 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:oro_ticket_booking_app/core/utils/ethiopian_date_converter.dart';
 import 'package:oro_ticket_booking_app/app/modules/auth/auth_service.dart';
-import 'package:oro_ticket_booking_app/app/data/models/user_model.dart';
 
 class HomeController extends GetxController {
   // User info
@@ -36,7 +34,9 @@ class HomeController extends GetxController {
     appBox = Hive.box('appBox');
     tripsBox = await Hive.openBox('tripsBox');
     _loadUser();
-    selectedDate.value = EthiopianDateConverter.toGregorian(EthiopianDateConverter.now());
+    selectedDate.value = EthiopianDateConverter.toGregorian(
+      EthiopianDateConverter.now(),
+    );
     await fetchTerminals();
     await fetchTrips();
   }
@@ -54,7 +54,9 @@ class HomeController extends GetxController {
       } else {
         // Handle invalid or missing data gracefully
         userName.value = "Unknown User";
-        debugPrint("_loadUser: User data invalid or missing, set to: ${userName.value}");
+        debugPrint(
+          "_loadUser: User data invalid or missing, set to: ${userName.value}",
+        );
       }
     } catch (e) {
       // Log error for debugging; in production, use a proper logging library
@@ -67,7 +69,6 @@ class HomeController extends GetxController {
   void reloadUser() {
     _loadUser();
   }
-
 
   /// Fetch terminals from API
   Future<void> fetchTerminals() async {
@@ -111,7 +112,9 @@ class HomeController extends GetxController {
         'plateNumber': 'ABC-123',
         'level': 'VIP',
         'departure': terminals.isNotEmpty ? terminals[0]['name'] : 'Terminal 1',
-        'destination': terminals.length > 1 ? terminals[1]['name'] : 'Terminal 2',
+        'destination': terminals.length > 1
+            ? terminals[1]['name']
+            : 'Terminal 2',
         'seatsAvailable': 20,
         'price': 150.0,
       },
@@ -119,7 +122,9 @@ class HomeController extends GetxController {
         'plateNumber': 'DEF-456',
         'level': 'Standard',
         'departure': terminals.length > 1 ? terminals[1]['name'] : 'Terminal 2',
-        'destination': terminals.isNotEmpty ? terminals[0]['name'] : 'Terminal 1',
+        'destination': terminals.isNotEmpty
+            ? terminals[0]['name']
+            : 'Terminal 1',
         'seatsAvailable': 30,
         'price': 100.0,
       },

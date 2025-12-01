@@ -71,7 +71,7 @@ class AuthService {
     final url = _buildUri(_loginPath);
     if (kDebugMode) {
       debugPrint('➡️  POST $url');
-      debugPrint('📨 Payload: {"phone": "$phone", "password": "••••••"}');
+      debugPrint('📨 Payload: {"phone": "$phone", "password": "[REDACTED]"}');
     }
 
     final response = await http.post(
@@ -300,6 +300,7 @@ class AuthService {
     required String token,
     required String category,
     required String message,
+    required String userToken,
   }) async {
     final url = _buildUri(_submitComplaintPath);
 
@@ -307,7 +308,7 @@ class AuthService {
       url,
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
+        "Authorization": "Bearer $userToken",
       },
       body: jsonEncode({
         "category": category,

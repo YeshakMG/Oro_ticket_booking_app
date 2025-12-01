@@ -14,25 +14,23 @@ import 'app/routes/app_pages.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load(fileName: ".env");
+  // print("Loaded .env successfully");
 
-    await dotenv.load(fileName: ".env");
-    print("Loaded .env successfully");
-
-    await GetStorage.init();
-    await Hive.initFlutter();
-    Hive.registerAdapter(UserModelAdapter());
-    Hive.registerAdapter(TripModelAdapter());
-    final box = await Hive.openBox('appBox');
-   Get.lazyPut(() => SignUpController()); // ✅ Add this
-   Get.lazyPut(() => AuthtabsController()); // ✅ Add this
+  await GetStorage.init();
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(TripModelAdapter());
+  final box = await Hive.openBox('appBox');
+  Get.lazyPut(() => SignUpController()); // ✅ Add this
+  Get.lazyPut(() => AuthtabsController()); // ✅ Add this
 
   String? token = box.get("token");
 
-  // Set initial locale based on saved language
-  final savedLang = box.get("language") ?? "en";
-  final initialLocale = Locale(savedLang);
-
-  runApp(MyApp(initialRoute: token != null ? Routes.HOME : Routes.LOGIN, initialLocale: initialLocale));
+  runApp(MyApp(
+    initialRoute: token != null ? Routes.home : Routes.login,
+    initialLocale: const Locale('en', 'US'), // Default to English
+  ));
 }
 
 class MyApp extends StatelessWidget {

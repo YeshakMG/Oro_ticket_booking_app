@@ -60,7 +60,7 @@ class SettingsController extends GetxController {
     rememberMe.value = value;
     if (!value) {
       await box.delete("rememberPhone");
-      await box.delete("rememberPassword");
+      // Note: Password storage removed for security
     }
   }
 
@@ -82,13 +82,16 @@ class SettingsController extends GetxController {
 
     try {
       final token = box.get("token");
-      if (token == null || token.isEmpty) {
-        throw Exception('Authentication token is missing or invalid');
+      if (token == null) {
+        Get.snackbar("Error", "Authentication required. Please login again.");
+        return;
       }
+
       await _authService.submitFeedback(
         token: token,
         category: selectedCategory.value,
         message: feedback.value,
+        userToken: token,
       );
 
       Get.snackbar("Thank you", "Your feedback has been submitted");
@@ -104,7 +107,7 @@ class SettingsController extends GetxController {
     await box.delete("token");
     await box.delete("user");
     await box.delete("rememberPhone");
-    await box.delete("rememberPassword");
+    // Note: Password storage removed for security
     await getStorage.remove("fullName");
     await getStorage.remove("phone");
     await getStorage.remove("email");
