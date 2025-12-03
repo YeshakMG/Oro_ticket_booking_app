@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:oro_ticket_booking_app/app/widgets/app_scaffold.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 import 'package:oro_ticket_booking_app/core/utils/ethiopian_date_converter.dart';
@@ -58,9 +59,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               ),
               elevation: 8,
               child: Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(12),
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -74,7 +75,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       "Select Ethiopian Date",
                       style: AppTextStyles.buttonMediumB.copyWith(
                         fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                        fontSize: 14,
                         color: Colors.black87,
                       ),
                     ),
@@ -90,7 +91,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                               .map(
                                 (year) => DropdownMenuItem(
                                   value: year,
-                                  child: Text(year.toString()),
+                                  child: Text(
+                                    year.toString(),
+                                    style: AppTextStyles.caption,
+                                  ),
                                 ),
                               )
                               .toList(),
@@ -113,6 +117,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                   month: month,
                                   day: 1,
                                 ).monthName,
+                                style: AppTextStyles.caption,
                               ),
                             ),
                           )
@@ -134,7 +139,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                               .map(
                                 (day) => DropdownMenuItem(
                                   value: day,
-                                  child: Text(day.toString()),
+                                  child: Text(
+                                    day.toString(),
+                                    style: AppTextStyles.caption,
+                                  ),
                                 ),
                               )
                               .toList(),
@@ -151,9 +159,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           child: OutlinedButton(
                             onPressed: () => Navigator.of(context).pop(),
                             style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 8,
+                              ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                               side: const BorderSide(color: Color(0xFF029600)),
                             ),
@@ -182,9 +193,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF029600),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 8,
+                              ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                               elevation: 2,
                             ),
@@ -227,15 +241,15 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           fontSize: 14,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey.shade300),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey.shade300),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Color(0xFF029600), width: 2),
         ),
         filled: true,
@@ -277,14 +291,14 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     children: [
                       Text(
                         "$greetingMessage,",
-                        style: AppTextStyles.caption2.copyWith(fontSize: 14),
+                        style: AppTextStyles.caption2.copyWith(fontSize: 12),
                       ),
                       Obx(
                         () => Text(
                           controller.userName.value,
                           style: AppTextStyles.heading2.copyWith(
                             color: Colors.black,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         ),
                       ),
@@ -293,7 +307,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                   SizedBox(height: 4),
                   Text(
                     "Ready for your next journey?",
-                    style: AppTextStyles.caption2.copyWith(fontSize: 14),
+                    style: AppTextStyles.caption2.copyWith(fontSize: 12),
                   ),
                 ],
               ),
@@ -337,25 +351,26 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           SizedBox(height: 16),
                           _buildEnhancedDateField(),
                           // Search Button
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 20),
                           SizedBox(
-                            width: double.infinity,
-                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            // height: 50,
                             child: ElevatedButton.icon(
                               icon: const Icon(Icons.search, size: 20),
                               label: Text(
                                 "Search Bus",
                                 style: AppTextStyles.button.copyWith(
                                   fontWeight: FontWeight.w600,
+                                  fontSize: 12,
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF029600),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                elevation: 4,
+                                elevation: 3,
                                 shadowColor: Colors.green.withOpacity(0.4),
                               ),
                               onPressed: () {
@@ -444,6 +459,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         style: AppTextStyles.heading3.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
+                          fontSize: 14,
                         ),
                       ),
                       TextButton(
@@ -452,12 +468,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           "See All",
                           style: AppTextStyles.caption2.copyWith(
                             color: const Color(0xFF029600),
+                            fontSize: 10,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
                   SizedBox(
                     height: 140,
                     child: ListView(
@@ -506,6 +522,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     style: AppTextStyles.heading3.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Colors.black87,
+                      fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -579,7 +596,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
@@ -609,7 +626,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     label,
                     style: AppTextStyles.caption2.copyWith(
                       color: Colors.grey.shade600,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -618,11 +635,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     style: value.contains("Select")
                         ? AppTextStyles.body2.copyWith(
                             color: Colors.grey.shade400,
-                            fontSize: 14,
+                            fontSize: 12,
                           )
                         : AppTextStyles.body1.copyWith(
                             color: Colors.black87,
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
                     maxLines: 1,
@@ -645,7 +662,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
@@ -679,7 +696,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     "Travel Date",
                     style: AppTextStyles.caption2.copyWith(
                       color: Colors.grey.shade600,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -695,12 +712,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       style: controller.selectedDate.value != null
                           ? AppTextStyles.body1.copyWith(
                               color: Colors.black87,
-                              fontSize: 14,
+                              fontSize: 11,
                               fontWeight: FontWeight.w500,
                             )
                           : AppTextStyles.body2.copyWith(
                               color: Colors.grey.shade400,
-                              fontSize: 14,
+                              fontSize: 12,
                             ),
                     ),
                   ),
@@ -723,9 +740,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       onTap: () {}, // Handle tap
       child: Container(
         padding: const EdgeInsets.all(16),
+        width: MediaQuery.of(context).size.width * 0.4,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
@@ -752,7 +770,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               title,
               style: AppTextStyles.body1.copyWith(
                 fontWeight: FontWeight.w600,
-                fontSize: 16,
+                fontSize: 12,
                 color: Colors.black87,
               ),
             ),
@@ -762,21 +780,30 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 subtitle,
                 style: AppTextStyles.caption.copyWith(
                   color: Colors.grey.shade500,
-                  fontSize: 12,
+                  fontSize: 10,
                 ),
               ),
             ),
-            const Spacer(),
-            Row(
+
+            Column(
+              spacing: 5,
               children: [
-                Icon(Icons.access_time, color: Colors.grey.shade400, size: 14),
-                const SizedBox(width: 4),
-                Text(
-                  "2h 30m",
-                  style: AppTextStyles.caption.copyWith(
-                    color: Colors.grey.shade500,
-                    fontSize: 11,
-                  ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      color: Colors.grey.shade400,
+                      size: 14,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "2h 30m",
+                      style: AppTextStyles.caption.copyWith(
+                        color: Colors.grey.shade500,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -795,7 +822,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(8),
               border: Border.all(color: color.withOpacity(0.2)),
               boxShadow: [
                 BoxShadow(
@@ -813,7 +840,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             type,
             style: AppTextStyles.caption.copyWith(
               color: Colors.black87,
-              fontSize: 12,
+              fontSize: 10,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -841,7 +868,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 isFrom ? "Select Departure" : "Select Destination",
                 style: AppTextStyles.buttonMediumB.copyWith(
                   fontWeight: FontWeight.w600,
-                  fontSize: 18,
+                  fontSize: 14,
                   color: Colors.black87,
                 ),
               ),
@@ -851,43 +878,32 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                   itemCount: controller.terminals.length,
                   itemBuilder: (context, index) {
                     final terminal = controller.terminals[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                    return ListTile(
+                      leading: Icon(
+                        Iconsax.location,
+                        color: Color(0xFF029600),
+                        size: 16,
                       ),
-                      child: ListTile(
-                        leading: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF029600).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Icons.place,
-                            color: Color(0xFF029600),
-                          ),
+                      title: Text(
+                        terminal['name'],
+                        style: AppTextStyles.subtitle3.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10,
                         ),
-                        title: Text(
-                          terminal['name'],
-                          style: AppTextStyles.subtitle3.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.grey,
-                        ),
-                        onTap: () {
-                          if (isFrom) {
-                            controller.changeFromLocation(terminal);
-                          } else {
-                            controller.changeToLocation(terminal);
-                          }
-                          Navigator.pop(context);
-                        },
                       ),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12,
+                        color: Colors.grey,
+                      ),
+                      onTap: () {
+                        if (isFrom) {
+                          controller.changeFromLocation(terminal);
+                        } else {
+                          controller.changeToLocation(terminal);
+                        }
+                        Navigator.pop(context);
+                      },
                     );
                   },
                 ),

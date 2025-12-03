@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oro_ticket_booking_app/app/widgets/app_scaffold.dart';
+import 'package:oro_ticket_booking_app/core/constants/colors.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 import '../controllers/payment_controller.dart';
 
@@ -39,7 +40,7 @@ class PaymentView extends GetView<PaymentController> {
             ),
 
             // Payment Button
-            _buildPaymentButton(),
+            _buildPaymentButton(context),
           ],
         ),
       ),
@@ -88,17 +89,14 @@ class PaymentView extends GetView<PaymentController> {
 
   Widget _buildTripInfoCard() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      // margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF029600), Color(0xFF029600)],
-        ),
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.backgroundAlt,
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.4),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -107,64 +105,92 @@ class PaymentView extends GetView<PaymentController> {
       child: Obx(
         () => Column(
           children: [
-            // Route with arrow
+            // Route Visualization (Vertical)
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Left Icons Column
+                Column(
+                  children: [
+                    Icon(
+                      Icons.radio_button_checked,
+                      color: Colors.black54,
+                      size: 16,
+                    ),
+                    Container(
+                      width: 2,
+                      height: 25,
+                      color: Colors.black54.withOpacity(0.5),
+                    ),
+                    Icon(Icons.directions_bus, color: Colors.black, size: 20),
+                    Container(
+                      width: 2,
+                      height: 30,
+                      color: Colors.black54.withOpacity(0.5),
+                    ),
+                    Icon(
+                      Icons.radio_button_checked,
+                      color: Colors.black54,
+                      size: 16,
+                    ),
+                  ],
+                ),
+
+                const SizedBox(width: 12),
+
+                // Locations Column
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      // From (Departure)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.white,
-                            size: 20,
+                          Text(
+                            "From",
+                            style: AppTextStyles.caption.copyWith(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(height: 4),
                           Text(
                             controller.selectedTrip.value?['departure'] ??
                                 'N/A',
                             style: AppTextStyles.body1.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
                             ),
-                            maxLines: 1,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.arrow_downward,
-                              color: Colors.white70,
-                              fontWeight: FontWeight.w600,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
+
+                      const SizedBox(height: 24),
+
+                      // To (Destination)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.location_on_rounded,
-                            color: Colors.white,
-                            size: 20,
+                          Text(
+                            "To",
+                            style: AppTextStyles.caption.copyWith(
+                              color: Colors.black54,
+                            ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(height: 4),
                           Text(
                             controller.selectedTrip.value?['destination'] ??
                                 'N/A',
                             style: AppTextStyles.body1.copyWith(
-                              color: Colors.white,
+                              color: Colors.black,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
                             ),
-                            maxLines: 1,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],
@@ -176,19 +202,22 @@ class PaymentView extends GetView<PaymentController> {
             ),
 
             const SizedBox(height: 16),
-            Container(height: 1, color: Colors.white.withOpacity(0.3)),
+
+            // Divider
+            Container(height: 1, color: Colors.black.withOpacity(0.3)),
+
             const SizedBox(height: 12),
 
-            // Trip Details
+            // Trip Details (Date, Time, Bus, etc.)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildTripDetail(
-                  "Bus Number",
+                _buildTripDetailItem(
+                  Icons.directions_bus,
                   controller.selectedTrip.value?['plateNumber'] ?? 'N/A',
                 ),
-                _buildTripDetail("Date", "Today"),
-                _buildTripDetail("Time", "06:30 AM"),
+                _buildTripDetailItem(Icons.calendar_today, "Today"),
+                _buildTripDetailItem(Icons.schedule, "06:30 AM"),
               ],
             ),
           ],
@@ -197,20 +226,16 @@ class PaymentView extends GetView<PaymentController> {
     );
   }
 
-  Widget _buildTripDetail(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildTripDetailItem(IconData icon, String text) {
+    return Row(
       children: [
+        Icon(icon, color: Colors.black54, size: 16),
+        const SizedBox(width: 6),
         Text(
-          label,
-          style: AppTextStyles.caption.copyWith(color: Colors.white70),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          value,
+          text,
           style: AppTextStyles.body2.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
+            color: Colors.black54,
+            fontSize: 10,
           ),
         ),
       ],
@@ -222,7 +247,7 @@ class PaymentView extends GetView<PaymentController> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
@@ -237,14 +262,13 @@ class PaymentView extends GetView<PaymentController> {
         children: [
           Row(
             children: [
-              Icon(Icons.event_seat, color: Colors.green, size: 20),
+              Icon(Icons.event_seat, color: Colors.green, size: 16),
               const SizedBox(width: 8),
               Text(
                 "Selected Seats",
                 style: AppTextStyles.heading3.copyWith(
-                  fontWeight: FontWeight.w600,
                   color: Colors.black87,
-                  fontSize: 14,
+                  fontSize: 12,
                 ),
               ),
             ],
@@ -258,11 +282,11 @@ class PaymentView extends GetView<PaymentController> {
                 return Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
-                    vertical: 8,
+                    vertical: 4,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(4),
                     border: Border.all(color: Colors.blue.shade200),
                   ),
                   child: Row(
@@ -291,10 +315,10 @@ class PaymentView extends GetView<PaymentController> {
 
   Widget _buildPriceBreakdown() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
@@ -321,7 +345,7 @@ class PaymentView extends GetView<PaymentController> {
                   style: AppTextStyles.heading3.copyWith(
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
-                    fontSize: 16,
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -344,7 +368,6 @@ class PaymentView extends GetView<PaymentController> {
 
             const SizedBox(height: 12),
             Divider(color: Colors.grey.shade300),
-            const SizedBox(height: 8),
 
             // Total
             _buildPriceRow("Total Amount", "$totalAmount ETB", isTotal: true),
@@ -369,30 +392,43 @@ class PaymentView extends GetView<PaymentController> {
               ? AppTextStyles.heading3.copyWith(
                   color: Color(0xFF029600),
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: 10,
                 )
               : isSecondary
-              ? AppTextStyles.body2.copyWith(color: Colors.grey.shade600)
+              ? AppTextStyles.body2.copyWith(
+                  color: Colors.grey.shade600,
+                  fontSize: 10,
+                )
               : AppTextStyles.body1.copyWith(
-                  fontSize: 14,
+                  fontSize: 10,
                   fontWeight: FontWeight.w200,
                 ),
         ),
         Text(
           value,
           style: isTotal
-              ? AppTextStyles.heading2.copyWith(color: Colors.green.shade700)
+              ? AppTextStyles.heading2.copyWith(
+                  color: Colors.green.shade700,
+                  fontSize: 12,
+                )
               : isSecondary
-              ? AppTextStyles.body2.copyWith(color: Colors.grey.shade600)
-              : AppTextStyles.body1.copyWith(fontWeight: FontWeight.w600),
+              ? AppTextStyles.body2.copyWith(
+                  color: Colors.grey.shade600,
+                  fontSize: 12,
+                )
+              : AppTextStyles.body1.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
         ),
       ],
     );
   }
 
-  Widget _buildPaymentButton() {
+  Widget _buildPaymentButton(BuildContext context) {
     return SafeArea(
       child: Container(
+        width: double.infinity,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -413,41 +449,43 @@ class PaymentView extends GetView<PaymentController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Total Amount
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Total to Pay:",
-                      style: AppTextStyles.body1.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      "$totalAmount ETB",
-                      style: AppTextStyles.heading2.copyWith(
-                        color: Colors.green.shade700,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   width: double.infinity,
+              //   padding: const EdgeInsets.only(bottom: 12),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Text(
+              //         "Total to Pay:",
+              //         style: AppTextStyles.body1.copyWith(
+              //           fontWeight: FontWeight.w600,
+              //           fontSize: 12,
+              //         ),
+              //       ),
+              //       Text(
+              //         "$totalAmount ETB",
+              //         style: AppTextStyles.heading2.copyWith(
+              //           color: Colors.green.shade700,
+              //           fontWeight: FontWeight.w700,
+              //           fontSize: 14,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               // Pay Button
               SizedBox(
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                    elevation: 2,
+                    elevation: 3,
                   ),
                   onPressed: () => controller.processPayment(),
                   child: Row(
@@ -455,7 +493,12 @@ class PaymentView extends GetView<PaymentController> {
                     children: [
                       Icon(Icons.lock_outline, size: 20),
                       const SizedBox(width: 8),
-                      Text("Pay Now", style: AppTextStyles.button),
+                      Text(
+                        "Pay Now",
+                        style: AppTextStyles.buttonMediumW.copyWith(
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                 ),

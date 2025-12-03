@@ -44,7 +44,7 @@ class BookView extends GetView<BookController> {
             ),
 
             // Buy Button
-            _buildBuyButton(),
+            _buildBuyButton(context),
           ],
         ),
       ),
@@ -153,7 +153,7 @@ class BookView extends GetView<BookController> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Row(
@@ -229,7 +229,7 @@ class BookView extends GetView<BookController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Row Label
-                        Container(
+                        SizedBox(
                           width: 24,
                           child: Text(
                             rowLetter,
@@ -341,7 +341,7 @@ class BookView extends GetView<BookController> {
               : Text(
                   seatNumber.substring(1), // Show only the number part (A1 → 1)
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
@@ -361,7 +361,7 @@ class BookView extends GetView<BookController> {
           color: controller.selectedSeats.isEmpty
               ? Colors.transparent
               : Colors.blue.shade50,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: controller.selectedSeats.isEmpty
                 ? Colors.transparent
@@ -387,6 +387,7 @@ class BookView extends GetView<BookController> {
                       : controller.selectedSeats.join(", "),
                   style: AppTextStyles.body1.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontSize: 11,
                     color: controller.selectedSeats.isEmpty
                         ? Colors.grey
                         : Colors.blue.shade800,
@@ -407,7 +408,7 @@ class BookView extends GetView<BookController> {
     );
   }
 
-  Widget _buildBuyButton() {
+  Widget _buildBuyButton(BuildContext context) {
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -435,14 +436,13 @@ class BookView extends GetView<BookController> {
                     children: [
                       Text(
                         "Total Amount:",
-                        style: AppTextStyles.body1.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: AppTextStyles.body1.copyWith(fontSize: 11),
                       ),
                       Text(
                         "${controller.selectedSeats.length * (controller.selectedTrip.value?['price'] ?? 0)} ETB",
                         style: AppTextStyles.heading3.copyWith(
                           color: Colors.green.shade700,
+                          fontSize: 12,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -452,14 +452,14 @@ class BookView extends GetView<BookController> {
               ],
               // Continue Button
               SizedBox(
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     elevation: 2,
                   ),

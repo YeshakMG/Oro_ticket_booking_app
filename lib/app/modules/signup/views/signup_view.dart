@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 import '../controllers/signup_controller.dart';
 
@@ -63,8 +64,8 @@ class SignUpView extends GetView<SignUpController> {
                       Text(
                         "Create an account or log in to explore about our app",
                         style: AppTextStyles.caption.copyWith(
-                          color: Colors.white.withOpacity(0.9),
-                          fontSize: 13,
+                          color: Colors.grey.shade200,
+                          fontSize: 10,
                         ),
                       ),
                     ],
@@ -76,7 +77,7 @@ class SignUpView extends GetView<SignUpController> {
                 /// Signup card section
                 Container(
                   width: double.infinity,
-                  height: size.height * 0.80,
+                  height: size.height * 0.70,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -111,7 +112,7 @@ class SignUpView extends GetView<SignUpController> {
                                       "Log In",
                                       style: AppTextStyles.body1.copyWith(
                                         color: Colors.grey[600],
-                                        fontWeight: FontWeight.w500,
+                                        fontSize: 10,
                                       ),
                                     ),
                                   ),
@@ -121,11 +122,11 @@ class SignUpView extends GetView<SignUpController> {
                             Expanded(
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
+                                  vertical: 10,
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(8),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.05),
@@ -137,7 +138,10 @@ class SignUpView extends GetView<SignUpController> {
                                 child: Center(
                                   child: Text(
                                     "Sign Up",
-                                    style: AppTextStyles.buttonMedium,
+                                    style: AppTextStyles.buttonMedium.copyWith(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -145,12 +149,12 @@ class SignUpView extends GetView<SignUpController> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 30),
 
                       /// Signup form
                       Expanded(
                         child: SingleChildScrollView(
-                          child: _buildSignUpForm(controller),
+                          child: _buildSignUpForm(controller, context),
                         ),
                       ),
                     ],
@@ -165,7 +169,10 @@ class SignUpView extends GetView<SignUpController> {
   }
 
   /// ------------------ SIGNUP FORM ------------------
-  Widget _buildSignUpForm(SignUpController signUpController) {
+  Widget _buildSignUpForm(
+    SignUpController signUpController,
+    BuildContext context,
+  ) {
     return Form(
       key: signUpController.formKey,
       child: Column(
@@ -184,17 +191,20 @@ class SignUpView extends GetView<SignUpController> {
             },
             decoration: InputDecoration(
               labelText: "Full Name",
-              labelStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
-              prefixIcon: const Icon(Icons.person, color: Colors.grey),
+              labelStyle: AppTextStyles.caption3.copyWith(
+                color: Colors.grey,
+                fontSize: 10,
+              ),
+              prefixIcon: Icon(Iconsax.profile_2user, color: Colors.grey),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: Color(0xFFEDF1F3)),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 borderSide: const BorderSide(color: Colors.green),
               ),
             ),
@@ -217,17 +227,20 @@ class SignUpView extends GetView<SignUpController> {
             },
             decoration: InputDecoration(
               labelText: "Phone Number",
-              labelStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
-              prefixIcon: const Icon(Icons.phone, color: Colors.grey),
+              labelStyle: AppTextStyles.caption3.copyWith(
+                color: Colors.grey,
+                fontSize: 10,
+              ),
+              prefixIcon: const Icon(Iconsax.mobile, color: Colors.grey),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: Color(0xFFEDF1F3)),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 borderSide: const BorderSide(color: Colors.green),
               ),
             ),
@@ -250,17 +263,24 @@ class SignUpView extends GetView<SignUpController> {
             },
             decoration: InputDecoration(
               labelText: "Email",
-              labelStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
-              prefixIcon: const Icon(Icons.email, color: Colors.grey),
+              labelStyle: AppTextStyles.caption3.copyWith(
+                color: Colors.grey,
+                fontSize: 10,
+              ),
+              prefixIcon: const Icon(
+                Iconsax.sms,
+                color: Colors.grey,
+                weight: 1,
+              ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: Color(0xFFEDF1F3)),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 borderSide: const BorderSide(color: Colors.green),
               ),
             ),
@@ -283,26 +303,32 @@ class SignUpView extends GetView<SignUpController> {
               },
               decoration: InputDecoration(
                 labelText: "Password",
-                labelStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
-                prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                labelStyle: AppTextStyles.caption3.copyWith(
+                  color: Colors.grey,
+                  fontSize: 10,
+                ),
+                prefixIcon: const Icon(
+                  Iconsax.password_check,
+                  color: Colors.grey,
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     signUpController.isPasswordHidden.value
-                        ? Icons.visibility_off
-                        : Icons.visibility,
+                        ? Iconsax.eye_slash
+                        : Iconsax.eye,
                     color: Colors.grey,
                   ),
                   onPressed: signUpController.isPasswordHidden.toggle,
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Color(0xFFEDF1F3)),
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.green),
                 ),
               ),
@@ -313,7 +339,7 @@ class SignUpView extends GetView<SignUpController> {
           // Sign Up button
           Obx(
             () => SizedBox(
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width * 0.5,
               child: ElevatedButton(
                 onPressed: signUpController.isLoading.value
                     ? null
@@ -325,15 +351,21 @@ class SignUpView extends GetView<SignUpController> {
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   elevation: 3,
                 ),
                 child: signUpController.isLoading.value
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text("Sign Up", style: AppTextStyles.buttonMediumW),
+                    : Text(
+                        "Sign Up",
+                        style: AppTextStyles.buttonMediumW.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
               ),
             ),
           ),

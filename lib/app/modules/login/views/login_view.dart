@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:oro_ticket_booking_app/core/constants/colors.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 import '../../login/controllers/login_controller.dart';
 
@@ -63,8 +65,8 @@ class LoginView extends GetView<LoginController> {
                       Text(
                         "Create an account or log in to explore about our app",
                         style: AppTextStyles.caption.copyWith(
-                          color: Colors.white.withOpacity(0.9),
-                          fontSize: 13,
+                          color: Colors.grey.shade200,
+                          fontSize: 10,
                         ),
                       ),
                     ],
@@ -102,11 +104,11 @@ class LoginView extends GetView<LoginController> {
                             Expanded(
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
+                                  vertical: 10,
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(8),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.05),
@@ -118,7 +120,10 @@ class LoginView extends GetView<LoginController> {
                                 child: Center(
                                   child: Text(
                                     "Log In",
-                                    style: AppTextStyles.buttonMedium,
+                                    style: AppTextStyles.buttonMedium.copyWith(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -134,7 +139,10 @@ class LoginView extends GetView<LoginController> {
                                     child: Text(
                                       "Sign Up",
                                       style: AppTextStyles.buttonMedium
-                                          .copyWith(color: Colors.grey[600]),
+                                          .copyWith(
+                                            color: Colors.grey[600],
+                                            fontSize: 10,
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -143,12 +151,12 @@ class LoginView extends GetView<LoginController> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 30),
 
                       /// Login Form
                       Expanded(
                         child: SingleChildScrollView(
-                          child: _buildLoginForm(controller),
+                          child: _buildLoginForm(controller, context),
                         ),
                       ),
                     ],
@@ -163,7 +171,10 @@ class LoginView extends GetView<LoginController> {
   }
 
   /// ------------------ LOGIN FORM ------------------
-  Widget _buildLoginForm(LoginController loginController) {
+  Widget _buildLoginForm(
+    LoginController loginController,
+    BuildContext context,
+  ) {
     return Form(
       key: loginController.formKey,
       child: Column(
@@ -184,21 +195,27 @@ class LoginView extends GetView<LoginController> {
             },
             decoration: InputDecoration(
               labelText: "Phone Number",
-              labelStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
+              labelStyle: AppTextStyles.caption3.copyWith(
+                color: Colors.grey,
+                fontSize: 10,
+              ),
               hintText: "9xxxxxxxx",
               prefixText: "+251 ",
-              hintStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
-              prefixIcon: const Icon(Icons.phone, color: Colors.grey),
+              hintStyle: AppTextStyles.caption3.copyWith(
+                color: Colors.grey,
+                fontSize: 10,
+              ),
+              prefixIcon: const Icon(Iconsax.mobile, color: Colors.grey),
               prefixStyle: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: Color(0xFFEDF1F3)),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,
@@ -224,26 +241,32 @@ class LoginView extends GetView<LoginController> {
               },
               decoration: InputDecoration(
                 labelText: "Password",
-                labelStyle: AppTextStyles.caption3.copyWith(color: Colors.grey),
-                prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                labelStyle: AppTextStyles.caption3.copyWith(
+                  color: Colors.grey,
+                  fontSize: 10,
+                ),
+                prefixIcon: const Icon(
+                  Iconsax.password_check4,
+                  color: Colors.grey,
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     loginController.isPasswordHidden.value
-                        ? Icons.visibility_off
-                        : Icons.visibility,
+                        ? Iconsax.eye_slash
+                        : Iconsax.eye,
                     color: Colors.grey,
                   ),
                   onPressed: loginController.togglePasswordVisibility,
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Color(0xFFEDF1F3)),
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.green),
                 ),
               ),
@@ -269,7 +292,8 @@ class LoginView extends GetView<LoginController> {
                   Text(
                     "Remember me",
                     style: AppTextStyles.caption3.copyWith(
-                      color: Colors.black87,
+                      color: Colors.black,
+                      fontSize: 10,
                     ),
                   ),
                 ],
@@ -281,6 +305,7 @@ class LoginView extends GetView<LoginController> {
                   style: AppTextStyles.caption3.copyWith(
                     color: Colors.green,
                     fontWeight: FontWeight.w500,
+                    fontSize: 10,
                   ),
                 ),
               ),
@@ -291,7 +316,7 @@ class LoginView extends GetView<LoginController> {
           // Login button
           Obx(
             () => SizedBox(
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width * 0.5,
               child: ElevatedButton(
                 onPressed: loginController.isLoading.value
                     ? null
@@ -303,15 +328,21 @@ class LoginView extends GetView<LoginController> {
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   elevation: 3,
                 ),
                 child: loginController.isLoading.value
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text("Login", style: AppTextStyles.buttonMediumW),
+                    : Text(
+                        "Login",
+                        style: AppTextStyles.buttonMediumW.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
               ),
             ),
           ),

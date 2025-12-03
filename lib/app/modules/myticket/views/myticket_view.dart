@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:oro_ticket_booking_app/app/widgets/app_scaffold.dart';
+import 'package:oro_ticket_booking_app/core/constants/colors.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -22,12 +24,16 @@ class MyticketView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Your Booked Tickets", style: AppTextStyles.heading2),
+            Text(
+              "Your Booked Tickets",
+              style: AppTextStyles.heading2.copyWith(fontSize: 14),
+            ),
             const SizedBox(height: 8),
             Text(
               "Manage and view your upcoming trips",
               style: AppTextStyles.caption.copyWith(
-                color: Colors.grey.shade600,
+                color: Colors.grey.shade400,
+                fontSize: 10,
               ),
             ),
             const SizedBox(height: 20),
@@ -48,251 +54,488 @@ class MyticketView extends StatelessWidget {
                           final bookingId =
                               booking['bookingId']?.toString() ?? 'N/A';
                           final totalAmount = booking['totalAmount'] ?? 0;
+                          final departure = trip['departure'] ?? 'N/A';
+                          final destination = trip['destination'] ?? 'N/A';
+                          final plateNumber = trip['plateNumber'] ?? 'N/A';
+                          final time = trip['departureTime'] ?? '06:30 AM';
+                          final date = trip['departureDate'] ?? 'Today';
 
                           return Container(
                             margin: const EdgeInsets.only(bottom: 16),
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
+                                  color: Colors.grey.withValues(alpha: 0.5),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
                                 ),
                               ],
+                              border: Border.all(
+                                color: Colors.grey.shade200,
+                                width: 1,
+                              ),
                             ),
                             child: Column(
                               children: [
-                                // Ticket Header
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                // Ticket Top Section
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(12),
+                                      topRight: Radius.circular(12),
+                                    ),
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Colors.grey.shade200,
+                                        width: 1,
+                                      ),
+                                    ),
+                                  ),
                                   child: Row(
                                     children: [
+                                      // Status Badge
                                       Container(
                                         padding: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 6,
+                                          horizontal: 10,
+                                          vertical: 4,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Color(
+                                          color: const Color(
                                             0xFF029600,
-                                          ).withOpacity(0.2),
+                                          ).withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(
                                             8,
                                           ),
                                         ),
-                                        child: Text(
-                                          "Confirmed",
-                                          style: AppTextStyles.buttonSmall
-                                              .copyWith(
-                                                fontSize: 12,
-                                                color: Colors.black,
-                                              ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Iconsax.tick_circle,
+                                              size: 12,
+                                              color: const Color(0xFF029600),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              "Confirmed",
+                                              style: AppTextStyles.buttonSmall
+                                                  .copyWith(
+                                                    fontSize: 10,
+                                                    color: const Color(
+                                                      0xFF029600,
+                                                    ),
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       const Spacer(),
-                                      Text(
-                                        "$totalAmount ETB",
-                                        style: AppTextStyles.body1.copyWith(
-                                          color: Colors.black87,
-                                        ),
+                                      // Amount
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            "$totalAmount ETB",
+                                            style: AppTextStyles.body1.copyWith(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
                                 ),
 
-                                // Ticket Content
+                                // Main Ticket Content
                                 Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
                                     children: [
-                                      // Route
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: Column(
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 12,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade50,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            // Departure - Top
+                                            Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.location_on,
-                                                      color: Color(0xFF029600),
-                                                      size: 20,
-                                                    ),
-                                                    const SizedBox(width: 12),
-                                                    Text(
-                                                      trip['departure'] ??
-                                                          'N/A',
-                                                      style: AppTextStyles.body1
-                                                          .copyWith(
-                                                            color: Colors.black,
-                                                          ),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ],
-                                                ),
                                                 Container(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        vertical: 4,
-                                                      ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                  padding: const EdgeInsets.all(
+                                                    6,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(
+                                                      0xFF029600,
+                                                    ),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: const Icon(
+                                                    Iconsax.location,
+                                                    color: Colors.white,
+                                                    size: 14,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 12),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Icon(
-                                                        Icons.arrow_downward,
-                                                        color: Colors.blueGrey,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        size: 20,
+                                                      Text(
+                                                        "From",
+                                                        style: AppTextStyles
+                                                            .caption
+                                                            .copyWith(
+                                                              color: Colors
+                                                                  .grey
+                                                                  .shade600,
+                                                              fontSize: 10,
+                                                            ),
+                                                      ),
+                                                      const SizedBox(height: 4),
+                                                      Text(
+                                                        departure,
+                                                        style: AppTextStyles
+                                                            .body1
+                                                            .copyWith(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 10,
+                                                            ),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.location_on_rounded,
-                                                      color: Color(0xFF029600),
-                                                      size: 20,
-                                                    ),
-                                                    const SizedBox(width: 12),
-                                                    Text(
-                                                      trip['destination'] ??
-                                                          'N/A',
-
-                                                      style: AppTextStyles.body1
-                                                          .copyWith(
-                                                            color: Colors.black,
-                                                          ),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ],
-                                                ),
                                               ],
                                             ),
-                                          ),
-                                        ],
-                                      ),
 
-                                      const SizedBox(height: 16),
-
-                                      // Trip Details
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildTicketDetail("Date", "Today"),
-                                          _buildTicketDetail(
-                                            "Time",
-                                            "06:30 AM",
-                                          ),
-                                          _buildTicketDetail(
-                                            "Seats",
-                                            selectedSeats.length.toString(),
-                                          ),
-                                        ],
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // Seats
-                                      Wrap(
-                                        spacing: 8,
-                                        runSpacing: 8,
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.end,
-                                        children: selectedSeats.map((seat) {
-                                          return Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                              vertical: 6,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue.shade50,
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                              border: Border.all(
-                                                color: Colors.blue.shade200,
-                                              ),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  Icons.event_seat,
-                                                  color: Colors.blue.shade700,
-                                                  size: 14,
-                                                ),
-                                                const SizedBox(width: 4),
-                                                Text(
-                                                  seat,
-                                                  style: AppTextStyles.caption
-                                                      .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors
-                                                            .blue
-                                                            .shade800,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                  ),
+                                              child: Row(
+                                                children: [
+                                                  const SizedBox(width: 21),
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: 1,
+                                                      decoration: BoxDecoration(
+                                                        gradient:
+                                                            LinearGradient(
+                                                              colors: [
+                                                                Colors
+                                                                    .grey
+                                                                    .shade300,
+                                                                Colors
+                                                                    .grey
+                                                                    .shade300,
+                                                              ],
+                                                            ),
                                                       ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 8,
+                                                        ),
+                                                    child: Icon(
+                                                      Iconsax.arrow_down,
+                                                      color: const Color(
+                                                        0xFF029600,
+                                                      ),
+                                                      size: 18,
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: 1,
+                                                      decoration: BoxDecoration(
+                                                        gradient:
+                                                            LinearGradient(
+                                                              colors: [
+                                                                Colors
+                                                                    .grey
+                                                                    .shade300,
+                                                                Colors
+                                                                    .grey
+                                                                    .shade300,
+                                                              ],
+                                                            ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  padding: const EdgeInsets.all(
+                                                    6,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.red.shade600,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: const Icon(
+                                                    Iconsax.location,
+                                                    color: Colors.white,
+                                                    size: 14,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 12),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "To",
+                                                        style: AppTextStyles
+                                                            .caption
+                                                            .copyWith(
+                                                              color: Colors
+                                                                  .grey
+                                                                  .shade600,
+                                                              fontSize: 10,
+                                                            ),
+                                                      ),
+                                                      const SizedBox(height: 4),
+                                                      Text(
+                                                        destination,
+                                                        style: AppTextStyles
+                                                            .body1
+                                                            .copyWith(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 10,
+                                                            ),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          );
-                                        }).toList(),
+                                          ],
+                                        ),
                                       ),
 
-                                      const SizedBox(height: 16),
+                                      const SizedBox(height: 10),
 
-                                      // View Ticket Button
-                                      SizedBox(
-                                        width: double.infinity,
-                                        child: ElevatedButton(
-                                          onPressed: () =>
-                                              _showTicketBottomSheet(
-                                                context,
-                                                bookingId,
-                                                booking,
-                                              ),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xFF029600),
-                                            foregroundColor: Colors.white,
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 12,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            elevation: 0,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.qr_code_2, size: 18),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                "View E-Ticket",
-                                                style:
-                                                    AppTextStyles.buttonSmall,
-                                              ),
-                                            ],
+                                      // Trip Details Grid
+                                      Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade50,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
                                           ),
                                         ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            _buildDetailItem(
+                                              Iconsax.calendar,
+                                              "Date",
+                                              date,
+                                            ),
+                                            _buildDetailItem(
+                                              Iconsax.clock,
+                                              "Time",
+                                              time,
+                                            ),
+                                            _buildDetailItem(
+                                              Iconsax.bus,
+                                              "Bus",
+                                              plateNumber,
+                                            ),
+                                            _buildDetailItem(
+                                              Icons.event_seat_outlined,
+                                              "Seats",
+                                              "${selectedSeats.length} seats",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 16),
+
+                                      // // Seat Numbers
+                                      // if (selectedSeats.isNotEmpty)
+                                      //   Container(
+                                      //     padding: const EdgeInsets.all(5),
+                                      //     decoration: BoxDecoration(
+                                      //       color: Colors.blue.shade50,
+                                      //       borderRadius: BorderRadius.circular(
+                                      //         8,
+                                      //       ),
+                                      //       border: Border.all(
+                                      //         color: Colors.blue.shade100,
+                                      //       ),
+                                      //     ),
+                                      //     child: Column(
+                                      //       crossAxisAlignment:
+                                      //           CrossAxisAlignment.start,
+                                      //       children: [
+                                      //         Row(
+                                      //           children: [
+                                      //             Icon(
+                                      //               Icons.event_seat,
+                                      //               color: Colors.blue.shade700,
+                                      //               size: 14,
+                                      //             ),
+                                      //             const SizedBox(width: 6),
+                                      //             Text(
+                                      //               "Seat Numbers",
+                                      //               style: AppTextStyles.caption
+                                      //                   .copyWith(
+                                      //                     color: Colors
+                                      //                         .blue
+                                      //                         .shade800,
+                                      //                     fontWeight:
+                                      //                         FontWeight.w600,
+                                      //                     fontSize: 11,
+                                      //                   ),
+                                      //             ),
+                                      //           ],
+                                      //         ),
+                                      //         const SizedBox(height: 8),
+                                      //         Wrap(
+                                      //           spacing: 8,
+                                      //           runSpacing: 8,
+                                      //           children: selectedSeats
+                                      //               .map(
+                                      //                 (seat) => Container(
+                                      //                   padding:
+                                      //                       const EdgeInsets.symmetric(
+                                      //                         horizontal: 10,
+                                      //                         vertical: 6,
+                                      //                       ),
+                                      //                   decoration: BoxDecoration(
+                                      //                     color: Colors.white,
+                                      //                     borderRadius:
+                                      //                         BorderRadius.circular(
+                                      //                           6,
+                                      //                         ),
+                                      //                     border: Border.all(
+                                      //                       color: Colors
+                                      //                           .blue
+                                      //                           .shade300,
+                                      //                     ),
+                                      //                   ),
+                                      //                   child: Text(
+                                      //                     seat,
+                                      //                     style: AppTextStyles
+                                      //                         .caption
+                                      //                         .copyWith(
+                                      //                           fontWeight:
+                                      //                               FontWeight
+                                      //                                   .w600,
+                                      //                           color: Colors
+                                      //                               .blue
+                                      //                               .shade800,
+                                      //                           fontSize: 10,
+                                      //                         ),
+                                      //                   ),
+                                      //                 ),
+                                      //               )
+                                      //               .toList(),
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //   ),
+                                      // const SizedBox(height: 20),
+
+                                      // Action Buttons
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                0.5,
+                                            child: ElevatedButton(
+                                              onPressed: () =>
+                                                  _showTicketBottomSheet(
+                                                    context,
+                                                    bookingId,
+                                                    booking,
+                                                  ),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color(
+                                                  0xFF029600,
+                                                ),
+                                                foregroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      vertical: 12,
+                                                    ),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Iconsax.scan_barcode,
+                                                    size: 16,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    "View Ticket",
+                                                    style: AppTextStyles
+                                                        .buttonSmall
+                                                        .copyWith(fontSize: 11),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -310,6 +553,47 @@ class MyticketView extends StatelessWidget {
     );
   }
 
+  Widget _buildDetailItem(IconData icon, String label, String value) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Icon(icon, size: 16, color: const Color(0xFF029600)),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          label,
+          style: AppTextStyles.caption.copyWith(
+            color: Colors.grey.shade600,
+            fontSize: 9,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          value,
+          style: AppTextStyles.body2.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 10,
+            color: Colors.black87,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+
   Widget _buildEmptyState() {
     return Center(
       child: Column(
@@ -323,12 +607,18 @@ class MyticketView extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             "No Tickets Yet",
-            style: AppTextStyles.heading2.copyWith(color: Colors.grey.shade600),
+            style: AppTextStyles.heading2.copyWith(
+              color: Colors.grey.shade600,
+              fontSize: 14,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             "Your booked tickets will appear here",
-            style: AppTextStyles.body2.copyWith(color: Colors.grey.shade500),
+            style: AppTextStyles.body2.copyWith(
+              color: Colors.grey.shade500,
+              fontSize: 12,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
@@ -338,30 +628,13 @@ class MyticketView extends StatelessWidget {
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
             ),
-            child: Text("Book a Trip", style: AppTextStyles.button),
+            child: Text(
+              "Book a Trip",
+              style: AppTextStyles.button.copyWith(fontSize: 10),
+            ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildTicketDetail(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: AppTextStyles.caption.copyWith(color: Colors.grey.shade600),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          value,
-          style: AppTextStyles.body2.copyWith(
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
-      ],
     );
   }
 
@@ -378,6 +651,11 @@ class MyticketView extends StatelessWidget {
         : <String>[];
     final totalAmount = booking['totalAmount'] ?? 0;
     final timestamp = booking['timestamp'] ?? DateTime.now().toIso8601String();
+    final departure = trip['departure'] ?? 'N/A';
+    final destination = trip['destination'] ?? 'N/A';
+    final plateNumber = trip['plateNumber'] ?? 'N/A';
+    final time = trip['departureTime'] ?? '06:30 AM';
+    final date = trip['departureDate'] ?? 'Today';
 
     // Get user data from storage
     final box = Hive.box('appBox');
@@ -419,200 +697,395 @@ class MyticketView extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Header
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
+        child: Column(
+          children: [
+            // Header with drag handle
+            Container(
+              padding: const EdgeInsets.only(top: 12, bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Your E-ticket",
-                        style: AppTextStyles.heading1.copyWith(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.close, color: Colors.black),
-                      onPressed: () => Get.back(),
-                    ),
-                  ],
-                ),
+                ],
               ),
+              child: Column(
+                children: [
+                  // Drag handle
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "E-Ticket Details",
+                            style: AppTextStyles.heading2.copyWith(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            shape: BoxShape.circle,
+                          ),
+                          child: GestureDetector(
+                            onTap: () => Get.back(),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.grey.shade700,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
-              // Ticket Content
-              Padding(
+            Expanded(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    // Booking Code
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Booking Code",
-                            style: AppTextStyles.caption.copyWith(
-                              color: Colors.grey.shade600,
+                    // Booking Status & Amount Card
+                    Column(
+                      children: [
+                        // Status Badge
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Booking ID",
+                              style: AppTextStyles.body2.copyWith(
+                                color: Colors.grey.shade600,
+                                fontSize: 12,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            bookingId,
-                            style: AppTextStyles.heading1.copyWith(
-                              color: Colors.green.shade700,
-                              letterSpacing: 2,
+                            Text(
+                              bookingId,
+                              style: AppTextStyles.body2.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: const Color(0xFF029600),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
                     ),
-
-                    const SizedBox(height: 24),
-
-                    // QR Code
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        children: [
-                          QrImageView(
-                            data: qrString,
-                            version: QrVersions.auto,
-                            size: 200.0,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            "Scan the barcode or enter the booking code when getting on the bus.",
-                            style: AppTextStyles.body2.copyWith(
-                              color: Colors.grey.shade600,
+                    // QR Code Card
+                    const SizedBox(height: 16),
+                    Column(
+                      children: [
+                        // Text(
+                        //   "Scan QR Code",
+                        //   style: AppTextStyles.heading3.copyWith(
+                        //     fontSize: 14,
+                        //     color: Colors.black,
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 16),
+                        Column(
+                          children: [
+                            QrImageView(
+                              data: qrString,
+                              version: QrVersions.auto,
+                              size: 100.0,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
+                            const SizedBox(height: 12),
+                            Text(
+                              "Show this QR code to the bus conductor",
+                              style: AppTextStyles.caption.copyWith(
+                                color: Colors.grey.shade600,
+                                fontSize: 10,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-
-                    const SizedBox(height: 24),
-
-                    // Trip Details
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
+                    SizedBox(height: 16),
+                    // Trip Details Card
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Iconsax.profile_2user,
+                                color: Colors.blue.shade800,
+                                size: 16,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Passenger",
+                                    style: AppTextStyles.caption.copyWith(
+                                      color: Colors.blue.shade800,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                  Text(
+                                    passengerName,
+                                    style: AppTextStyles.body2.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Colors.blue.shade900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Iconsax.mobile,
+                                color: Colors.blue.shade800,
+                                size: 16,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Phone",
+                                    style: AppTextStyles.caption.copyWith(
+                                      color: Colors.blue.shade800,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                  Text(
+                                    phone,
+                                    style: AppTextStyles.body2.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Colors.blue.shade900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    // Seat Numbers Card
+                    if (selectedSeats.isNotEmpty)
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Trip Details", style: AppTextStyles.heading3),
-                          const SizedBox(height: 12),
-                          _buildDetailRow("Passenger", passengerName),
-                          _buildDetailRow("Phone", phone),
-                          // _buildDetailRow(
-                          //   "Route",
-                          //   "${trip['departure']} → ${trip['destination']}",
-                          // ),
-                          _buildDetailRow(
-                            "Bus",
-                            "${trip['plateNumber']} • ${trip['level'] ?? 'Standard'}",
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade100,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.event_seat_outlined,
+                                  color: Colors.blue.shade700,
+                                  size: 16,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                "Seat Numbers",
+                                style: AppTextStyles.caption.copyWith(
+                                  color: Colors.blue.shade800,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ],
                           ),
-                          _buildDetailRow("Seats", selectedSeats.join(', ')),
-                          _buildDetailRow("Total Amount", "$totalAmount ETB"),
-                          _buildDetailRow(
-                            "Booking Date",
-                            DateTime.parse(timestamp).toString().split(' ')[0],
+                          const SizedBox(height: 12),
+                          Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: selectedSeats
+                                .map(
+                                  (seat) => Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: Colors.blue.shade300,
+                                        width: 1.5,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.blue.shade100,
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Text(
+                                      seat,
+                                      style: AppTextStyles.body2.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        color: Colors.blue.shade800,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
                           ),
                         ],
                       ),
-                    ),
 
-                    const SizedBox(height: 20),
-
-                    // Important Notice
+                    SizedBox(height: 16),
                     Container(
+                      margin: const EdgeInsets.only(bottom: 10),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
                         color: Colors.orange.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.orange.shade200),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.orange.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                        border: Border.all(
+                          color: Colors.orange.shade200,
+                          width: 1,
+                        ),
                       ),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.info,
-                            color: Colors.orange.shade700,
-                            size: 20,
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.orange.shade100,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Iconsax.info_circle,
+                              color: Colors.orange.shade700,
+                              size: 18,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Text(
-                              "Please arrive at the terminal 30 minutes before departure",
-                              style: AppTextStyles.caption.copyWith(
-                                color: Colors.orange.shade800,
-                              ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Important Information",
+                                  style: AppTextStyles.body2.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.orange.shade800,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildBulletPoint(
+                                      "Arrive at the terminal at least 30 minutes before departure",
+                                    ),
+                                    _buildBulletPoint(
+                                      "Bring a valid ID for verification",
+                                    ),
+                                    _buildBulletPoint(
+                                      "Keep this e-ticket accessible during the journey",
+                                    ),
+                                    _buildBulletPoint(
+                                      "Seats are non-transferable",
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-
-                    const SizedBox(height: 20),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildBulletPoint(String text) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.only(bottom: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              "$label:",
-              style: AppTextStyles.body2.copyWith(
-                color: Colors.grey.shade600,
-                fontWeight: FontWeight.w500,
-              ),
+          Container(
+            margin: const EdgeInsets.only(top: 4),
+            height: 5,
+            width: 5,
+            decoration: BoxDecoration(
+              color: Colors.orange.shade700,
+              shape: BoxShape.circle,
             ),
           ),
+          const SizedBox(width: 8),
           Expanded(
-            flex: 3,
             child: Text(
-              value,
-              style: AppTextStyles.body2.copyWith(fontWeight: FontWeight.w600),
+              text,
+              style: AppTextStyles.caption.copyWith(
+                color: Colors.orange.shade700,
+                fontSize: 10,
+                height: 1.3,
+              ),
             ),
           ),
         ],

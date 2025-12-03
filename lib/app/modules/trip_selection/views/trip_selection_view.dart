@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oro_ticket_booking_app/app/widgets/app_scaffold.dart';
+import 'package:oro_ticket_booking_app/core/constants/colors.dart';
 import 'package:oro_ticket_booking_app/core/constants/typography.dart';
 import '../controllers/trip_selection_controller.dart';
 
@@ -30,18 +31,19 @@ class TripSelectionView extends GetView<TripSelectionController> {
 
   Widget _buildRouteHeader() {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF029600), Color(0xFF029600)],
-        ),
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.backgroundAlt,
+        // gradient: LinearGradient(
+        //   begin: Alignment.topLeft,
+        //   end: Alignment.bottomRight,
+        //   colors: [Color(0xFF029600), Color(0xFF029600)],
+        // ),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.4),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -58,23 +60,23 @@ class TripSelectionView extends GetView<TripSelectionController> {
                 children: [
                   Icon(
                     Icons.radio_button_checked,
-                    color: Colors.white,
+                    color: Colors.black54,
                     size: 16,
                   ),
                   Container(
                     width: 2,
-                    height: 30,
-                    color: Colors.white.withOpacity(0.5),
+                    height: 25,
+                    color: Colors.black54.withOpacity(0.5),
                   ),
-                  Icon(Icons.directions_bus, color: Colors.white, size: 20),
+                  Icon(Icons.directions_bus, color: Colors.black, size: 20),
                   Container(
                     width: 2,
                     height: 30,
-                    color: Colors.white.withOpacity(0.5),
+                    color: Colors.black54.withOpacity(0.5),
                   ),
                   Icon(
                     Icons.radio_button_checked,
-                    color: Colors.white,
+                    color: Colors.black54,
                     size: 16,
                   ),
                 ],
@@ -94,15 +96,16 @@ class TripSelectionView extends GetView<TripSelectionController> {
                         Text(
                           "From",
                           style: AppTextStyles.caption.copyWith(
-                            color: Colors.white70,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           controller.from.value,
                           style: AppTextStyles.body1.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontSize: 12,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -118,15 +121,16 @@ class TripSelectionView extends GetView<TripSelectionController> {
                         Text(
                           "To",
                           style: AppTextStyles.caption.copyWith(
-                            color: Colors.white70,
+                            color: Colors.black54,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           controller.to.value,
                           style: AppTextStyles.body1.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -142,7 +146,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
           const SizedBox(height: 16),
 
           // Divider
-          Container(height: 1, color: Colors.white.withOpacity(0.3)),
+          Container(height: 1, color: Colors.black.withOpacity(0.3)),
 
           const SizedBox(height: 12),
 
@@ -166,11 +170,14 @@ class TripSelectionView extends GetView<TripSelectionController> {
   Widget _buildInfoItem(IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, color: Colors.white70, size: 16),
+        Icon(icon, color: Colors.black54, size: 16),
         const SizedBox(width: 4),
         Text(
           text,
-          style: AppTextStyles.caption.copyWith(color: Colors.white70),
+          style: AppTextStyles.caption.copyWith(
+            color: Colors.black54,
+            fontSize: 10,
+          ),
         ),
       ],
     );
@@ -186,7 +193,9 @@ class TripSelectionView extends GetView<TripSelectionController> {
           Obx(
             () => Text(
               "$trips Trip${trips > 1 ? 's' : ''} Available",
-              style: AppTextStyles.heading3,
+              style: AppTextStyles.heading3.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           // // Filter Button
@@ -215,12 +224,16 @@ class TripSelectionView extends GetView<TripSelectionController> {
       itemCount: controller.trips.length,
       itemBuilder: (context, index) {
         final trip = controller.trips[index];
-        return _buildTripCard(trip, index);
+        return _buildTripCard(context, trip, index);
       },
     );
   }
 
-  Widget _buildTripCard(Map<String, dynamic> trip, int index) {
+  Widget _buildTripCard(
+    BuildContext context,
+    Map<String, dynamic> trip,
+    int index,
+  ) {
     final isStandard = (trip['level'] ?? 'Standard') == 'Standard';
     final seatsAvailable = trip['seatsAvailable'] ?? 0;
     final isAlmostFull = seatsAvailable <= 5;
@@ -229,10 +242,10 @@ class TripSelectionView extends GetView<TripSelectionController> {
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -246,8 +259,8 @@ class TripSelectionView extends GetView<TripSelectionController> {
             decoration: BoxDecoration(
               color: Colors.green.shade50,
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
+                topLeft: Radius.circular(8),
+                topRight: Radius.circular(8),
               ),
             ),
             child: Row(
@@ -299,9 +312,17 @@ class TripSelectionView extends GetView<TripSelectionController> {
                       "${trip['price'] ?? 'N/A'} ETB",
                       style: AppTextStyles.heading3.copyWith(
                         color: Color(0xFF029600),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text("per person", style: AppTextStyles.caption),
+                    Text(
+                      "Per person",
+                      style: AppTextStyles.caption.copyWith(
+                        fontSize: 10,
+                        color: AppColors.bottomNavUnselected,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -335,6 +356,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
                         "${trip['plateNumber'] ?? 'N/A'} • ${trip['busModel'] ?? 'Coach Bus'}",
                         style: AppTextStyles.buttonSmall.copyWith(
                           color: Colors.grey[700],
+                          fontSize: 11,
                         ),
                       ),
                     ),
@@ -368,6 +390,7 @@ class TripSelectionView extends GetView<TripSelectionController> {
                             style: AppTextStyles.caption.copyWith(
                               color: isAlmostFull ? Colors.red : Colors.green,
                               fontWeight: FontWeight.w600,
+                              fontSize: 10,
                             ),
                           ),
                         ],
@@ -381,11 +404,9 @@ class TripSelectionView extends GetView<TripSelectionController> {
                 // Amenities
                 _buildAmenities(trip),
 
-                const SizedBox(height: 16),
-
                 // Select Button
                 SizedBox(
-                  width: double.infinity,
+                  width: MediaQuery.of(context).size.width * 0.5,
                   child: ElevatedButton(
                     onPressed: () => controller.selectTrip(trip),
                     style: ElevatedButton.styleFrom(
@@ -393,9 +414,9 @@ class TripSelectionView extends GetView<TripSelectionController> {
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      elevation: 2,
+                      elevation: 3,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -404,7 +425,9 @@ class TripSelectionView extends GetView<TripSelectionController> {
                         const SizedBox(width: 8),
                         Text(
                           "Select This Trip",
-                          style: AppTextStyles.buttonMediumW,
+                          style: AppTextStyles.buttonMediumW.copyWith(
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
@@ -424,11 +447,14 @@ class TripSelectionView extends GetView<TripSelectionController> {
       children: [
         Icon(icon, color: Colors.green, size: 20),
         const SizedBox(height: 4),
-        Text(label, style: AppTextStyles.caption),
+        Text(label, style: AppTextStyles.caption.copyWith(fontSize: 10)),
         const SizedBox(height: 4),
         Text(
           time,
-          style: AppTextStyles.body1.copyWith(fontWeight: FontWeight.w600),
+          style: AppTextStyles.body1.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 11,
+          ),
         ),
       ],
     );
@@ -489,12 +515,18 @@ class TripSelectionView extends GetView<TripSelectionController> {
           const SizedBox(height: 16),
           Text(
             "No Trips Available",
-            style: AppTextStyles.heading2.copyWith(color: Colors.grey.shade600),
+            style: AppTextStyles.heading2.copyWith(
+              color: Colors.grey.shade600,
+              fontSize: 12,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             "We couldn't find any trips for your selected route",
-            style: AppTextStyles.body2.copyWith(color: Colors.grey.shade500),
+            style: AppTextStyles.body2.copyWith(
+              color: Colors.grey.shade500,
+              fontSize: 10,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),

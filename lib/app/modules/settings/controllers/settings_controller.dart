@@ -16,12 +16,20 @@ class SettingsController extends GetxController {
 
   // Language preference (store and work with language codes)
   RxString selectedLanguageCode = "en".obs;
-  final RxList<Map<String, String>> languages = <Map<String, String>>[].obs; // [{code,name,nativeName}]
+  final RxList<Map<String, String>> languages =
+      <Map<String, String>>[].obs; // [{code,name,nativeName}]
 
   // Complaint / Feedback
   RxString feedback = "".obs;
   RxString selectedCategory = "".obs;
-  final RxList<Map<String, dynamic>> complaintCategories = <Map<String, dynamic>>[].obs;
+  final RxList<Map<String, dynamic>> complaintCategories =
+      <Map<String, dynamic>>[].obs;
+
+  final RxInt expandedTileIndex = (-1).obs;
+
+  void toggleTile(int index) {
+    expandedTileIndex.value = expandedTileIndex.value == index ? -1 : index;
+  }
 
   @override
   void onInit() {
@@ -109,15 +117,18 @@ class SettingsController extends GetxController {
       final jsonStr = await rootBundle.loadString('assets/i18n/languages.json');
       final parsed = jsonDecode(jsonStr) as Map<String, dynamic>;
       final list = (parsed['languages'] as List)
-          .map((e) => {
-                'code': (e as Map<String, dynamic>)['code'] as String,
-                'name': (e)['name'] as String,
-                'nativeName': (e)['nativeName'] as String,
-              })
+          .map(
+            (e) => {
+              'code': (e as Map<String, dynamic>)['code'] as String,
+              'name': (e)['name'] as String,
+              'nativeName': (e)['nativeName'] as String,
+            },
+          )
           .toList();
       if (list.isNotEmpty) {
         languages.assignAll(list);
-        final defaultCode = (parsed['default'] as String?) ?? list.first['code']!;
+        final defaultCode =
+            (parsed['default'] as String?) ?? list.first['code']!;
         if (!languages.any((e) => e['code'] == selectedLanguageCode.value)) {
           selectedLanguageCode.value = defaultCode;
         }

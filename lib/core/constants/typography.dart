@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oro_ticket_booking_app/core/constants/colors.dart';
 
-
 class AppTextStyles {
   // Headings
   static const TextStyle heading1 = TextStyle(
@@ -20,7 +19,7 @@ class AppTextStyles {
 
   static const TextStyle heading3 = TextStyle(
     fontFamily: 'Poppins',
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: FontWeight.w600,
     color: AppColors.body,
   );
@@ -71,7 +70,7 @@ class AppTextStyles {
   // Buttons and actions
   static const TextStyle button = TextStyle(
     fontFamily: 'Poppins',
-    fontSize: 16,
+    fontSize: 11,
     fontWeight: FontWeight.w500,
     color: Colors.white,
   );
@@ -142,7 +141,7 @@ class AppTextStyles {
 
   static const TextStyle caption = TextStyle(
     fontFamily: 'Poppins',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: FontWeight.w500,
     color: AppColors.secondary,
   );

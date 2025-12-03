@@ -24,6 +24,8 @@ dependencies:
   dropdown_search: ^6.0.2
   dio: ^5.9.0
   qr_flutter: ^4.1.0
+  circle_nav_bar: ^2.2.0
+  iconsax: ^0.0.8
   
 
 dev_dependencies:
